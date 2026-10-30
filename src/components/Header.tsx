@@ -1,69 +1,49 @@
-import { useCallback, useLayoutEffect, useRef } from 'react'
 import type { NavItem } from '../types'
 import { useScrollSpy } from '../hooks/useScrollSpy'
+import Roofline from './Roofline'
 
 const NAV: NavItem[] = [
-  { id: 'home', label: '關於我' },
-  { id: 'stamps', label: '活動戳記' },
-  { id: 'projects', label: '參與專案' },
-  { id: 'experiences', label: '競賽經歷' },
-  { id: 'contact', label: '聯繫方式' },
+  { id: 'home', top: '個人', bottom: '簡介' },
+  { id: 'projects', top: '參與', bottom: '專案' },
+  { id: 'experiences', top: '競賽', bottom: '經歷' },  
+  { id: 'gallery', top: '活動', bottom: '戳記' },
+  { id: 'contact', top: '聯繫', bottom: '方式' },
 ]
-const NAV_IDS = NAV.map((n) => n.id)
+const SPY_IDS = NAV.map((n) => n.id)
 
+/** 頁眉 — 參考松山文創園區：深灰橫幅 + 左側 logo（屋頂線條 + 姓名 + 英文副標） */
 export default function Header() {
-  const activeId = useScrollSpy(NAV_IDS, 'home')
-  const navRef = useRef<HTMLElement>(null)
-  const indicatorRef = useRef<HTMLDivElement>(null)
-  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
-
-  const reposition = useCallback(() => {
-    const nav = navRef.current
-    const indicator = indicatorRef.current
-    const activeLink = linkRefs.current[activeId]
-    if (!nav || !indicator || !activeLink) return
-    const navRect = nav.getBoundingClientRect()
-    const linkRect = activeLink.getBoundingClientRect()
-    indicator.style.width = `${linkRect.width}px`
-    indicator.style.transform = `translateX(${linkRect.left - navRect.left}px)`
-  }, [activeId])
-
-  useLayoutEffect(() => {
-    reposition()
-    window.addEventListener('resize', reposition)
-    // 字體載入後寬度可能改變，重新定位
-    document.fonts?.ready.then(reposition).catch(() => {})
-    return () => window.removeEventListener('resize', reposition)
-  }, [reposition])
+  const active = useScrollSpy(SPY_IDS, 'home')
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
-      <div className="h-20 max-w-7xl mx-auto px-4 sm:px-6 flex items-stretch justify-center overflow-x-auto">
-        <nav className="relative flex items-stretch" id="top-nav" ref={navRef}>
-          {/* 動態平滑滑動背景色塊 */}
-          <div
-            ref={indicatorRef}
-            className="absolute top-0 bottom-0 left-0 bg-primary transition-all duration-300 ease-out pointer-events-none z-0"
-          />
+    <header className="sticky top-0 z-50 bg-slate text-white shadow-md">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
+        <a href="#home" className="flex items-center gap-3 shrink-0">
+          <Roofline className="h-6 w-16 sm:w-20 text-white/75" />
+          <div className="leading-tight">
+            <div className="font-display font-extrabold text-lg sm:text-xl text-white">郭敏彥</div>
+            <div className="font-mono text-[10px] tracking-[0.18em] text-white/45">KUO MIN YEN · PORTFOLIO</div>
+          </div>
+        </a>
 
+        <nav className="flex items-stretch gap-0.5 overflow-x-auto -mr-2 pr-2">
           {NAV.map((item) => {
-            const isActive = item.id === activeId
+            const on = active === item.id
             return (
               <a
                 key={item.id}
-                ref={(el) => {
-                  linkRefs.current[item.id] = el
-                }}
                 href={`#${item.id}`}
-                aria-current={isActive ? 'page' : undefined}
+                aria-current={on ? 'true' : undefined}
                 className={
-                  'nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg transition-colors duration-200 whitespace-nowrap ' +
-                  (isActive
-                    ? 'text-on-primary-fixed font-bold'
-                    : 'text-on-surface-variant font-medium hover:text-primary')
+                  'relative px-3 sm:px-4 py-2 text-center leading-tight whitespace-nowrap transition-colors ' +
+                  (on ? 'text-white' : 'text-white/55 hover:text-white')
                 }
               >
-                {item.label}
+                <span className="block text-[13px] font-medium">{item.top}</span>
+                <span className="block text-[13px] font-medium">{item.bottom}</span>
+                <span
+                  className={'absolute left-2 right-2 bottom-0 h-0.5 transition-colors ' + (on ? 'bg-blue' : 'bg-transparent')}
+                />
               </a>
             )
           })}

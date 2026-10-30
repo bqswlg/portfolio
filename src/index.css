@@ -1,217 +1,82 @@
 @import "tailwindcss";
 
-/* 讓 class="dark" 仍可觸發 dark: 變體（本站為固定深色設計，色票本身即為深色）。 */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* ============================================================
-   設計 Tokens（由原 tailwind.config 的 theme.extend 移植為 v4 @theme）
+   設計 Tokens — 淡灰底 + 藍 (#58719A)，參考松山文創園區「關於松菸」頁
    ============================================================ */
 @theme {
-  /* ---------- 色票 (Material 深色) ---------- */
-  --color-on-primary-fixed: #001f26;
-  --color-on-secondary-fixed: #07006c;
-  --color-secondary-fixed: #e1e0ff;
-  --color-surface-bright: #353944;
-  --color-on-primary-container: #00424f;
-  --color-on-secondary-container: #b0b2ff;
-  --color-tertiary-fixed-dim: #adc6ff;
-  --color-secondary-container: #3131c0;
-  --color-on-primary: #003640;
-  --color-tertiary: #adc6ff;
-  --color-on-tertiary-fixed: #001a42;
-  --color-on-tertiary-fixed-variant: #004395;
-  --color-surface-tint: #4cd7f6;
-  --color-surface-variant: #313540;
-  --color-surface-container-low: #171b26;
-  --color-primary-fixed-dim: #4cd7f6;
-  --color-on-error-container: #ffdad6;
-  --color-outline: #869397;
-  --color-tertiary-fixed: #d8e2ff;
-  --color-primary-fixed: #acedff;
-  --color-on-secondary: #1000a9;
-  --color-primary: #4cd7f6;
-  --color-inverse-primary: #00687a;
-  --color-surface-container-high: #262a35;
-  --color-inverse-surface: #dfe2f1;
-  --color-on-surface: #dfe2f1;
-  --color-surface: #0f131d;
-  --color-surface-container-lowest: #0a0e18;
-  --color-surface-container: #1c1f2a;
-  --color-inverse-on-surface: #2c303b;
-  --color-outline-variant: #3d494c;
-  --color-on-error: #690005;
-  --color-surface-dim: #0f131d;
-  --color-on-secondary-fixed-variant: #2f2ebe;
-  --color-secondary: #c0c1ff;
-  --color-tertiary-container: #78a5ff;
-  --color-on-background: #dfe2f1;
-  --color-on-tertiary-container: #00397f;
-  --color-error-container: #93000a;
-  --color-surface-container-highest: #313540;
-  --color-background: #0f131d;
-  --color-on-primary-fixed-variant: #004e5c;
-  --color-on-surface-variant: #bcc9cd;
-  --color-error: #ffb4ab;
-  --color-on-tertiary: #002e6a;
-  --color-primary-container: #06b6d4;
-  --color-secondary-fixed-dim: #c0c1ff;
+  /* 中性灰階 */
+  --color-ink: #2b2e33;        /* 主要文字（深灰） */
+  --color-ink-soft: #626875;   /* 次要文字 */
+  --color-line: #e3e3e0;       /* 分隔線 / 邊框 */
+  --color-paper: #ffffff;      /* 卡片 / 白 */
+  --color-mist: #f5f5f3;       /* 頁面底（淺灰） */
+  --color-mist-2: #ececea;     /* 交錯淺灰 */
+  --color-slate: #44474c;      /* 頁眉 / Hero 深灰 */
+  --color-slate-soft: #5c6066;
 
-  /* ---------- 字體家族 ---------- */
-  --font-code-inline: "JetBrains Mono", ui-monospace, monospace;
-  --font-code-block: "JetBrains Mono", ui-monospace, monospace;
-  --font-label-badge: "JetBrains Mono", ui-monospace, monospace;
-  --font-body-lg: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-body-md: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-body-sm: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-label-caption: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-headline-lg: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-headline-md: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-headline-sm: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-headline-lg-mobile: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display-hero: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display-hero-mobile: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  /* 藍 accent */
+  --color-blue: #58719a;
+  --color-blue-dark: #455a7c;
+  --color-blue-soft: #e8edf4;
 
-  /* ---------- 字級（含行高 / 字距 / 字重，對應原 fontSize 設定） ---------- */
-  --text-code-inline: 13px;
-  --text-code-inline--line-height: 20px;
-  --text-code-inline--letter-spacing: -0.01em;
-  --text-code-inline--font-weight: 500;
-
-  --text-body-lg: 18px;
-  --text-body-lg--line-height: 28px;
-  --text-body-lg--letter-spacing: -0.01em;
-  --text-body-lg--font-weight: 400;
-
-  --text-body-sm: 13px;
-  --text-body-sm--line-height: 20px;
-  --text-body-sm--letter-spacing: 0em;
-  --text-body-sm--font-weight: 400;
-
-  --text-label-caption: 11px;
-  --text-label-caption--line-height: 14px;
-  --text-label-caption--letter-spacing: 0.02em;
-  --text-label-caption--font-weight: 500;
-
-  --text-code-block: 14px;
-  --text-code-block--line-height: 22px;
-  --text-code-block--letter-spacing: 0em;
-  --text-code-block--font-weight: 400;
-
-  --text-headline-lg: 36px;
-  --text-headline-lg--line-height: 44px;
-  --text-headline-lg--letter-spacing: -0.02em;
-  --text-headline-lg--font-weight: 700;
-
-  --text-display-hero-mobile: 40px;
-  --text-display-hero-mobile--line-height: 48px;
-  --text-display-hero-mobile--letter-spacing: -0.02em;
-  --text-display-hero-mobile--font-weight: 800;
-
-  --text-display-hero: 64px;
-  --text-display-hero--line-height: 72px;
-  --text-display-hero--letter-spacing: -0.03em;
-  --text-display-hero--font-weight: 800;
-
-  --text-label-badge: 12px;
-  --text-label-badge--line-height: 16px;
-  --text-label-badge--letter-spacing: 0.04em;
-  --text-label-badge--font-weight: 600;
-
-  --text-headline-md: 24px;
-  --text-headline-md--line-height: 32px;
-  --text-headline-md--letter-spacing: -0.01em;
-  --text-headline-md--font-weight: 600;
-
-  --text-body-md: 15px;
-  --text-body-md--line-height: 24px;
-  --text-body-md--letter-spacing: 0em;
-  --text-body-md--font-weight: 400;
-
-  --text-headline-sm: 18px;
-  --text-headline-sm--line-height: 26px;
-  --text-headline-sm--letter-spacing: 0em;
-  --text-headline-sm--font-weight: 600;
-
-  --text-headline-lg-mobile: 28px;
-  --text-headline-lg-mobile--line-height: 36px;
-  --text-headline-lg-mobile--letter-spacing: -0.01em;
-  --text-headline-lg-mobile--font-weight: 700;
+  /* 字體 */
+  --font-display: "Plus Jakarta Sans", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* ============================================================
-   全域基底樣式
-   ============================================================ */
 @layer base {
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-  }
   html {
     scroll-behavior: smooth;
   }
   body {
-    overscroll-behavior: none;
-    background-color: var(--color-surface);
-    color: var(--color-on-surface);
-    font-family: var(--font-body-md);
-    font-size: var(--text-body-md);
-    line-height: var(--text-body-md--line-height);
+    margin: 0;
+    background-color: var(--color-mist);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   ::selection {
-    background-color: var(--color-primary-container);
-    color: var(--color-on-primary-container);
-  }
-  main > :first-child {
-    margin-top: 0 !important;
-  }
-  main > :last-child {
-    margin-bottom: 0 !important;
-  }
-  /* 全站改為直角 */
-  *,
-  *::before,
-  *::after {
-    border-radius: 0px !important;
+    background-color: var(--color-blue);
+    color: #ffffff;
   }
 }
-
-/* ============================================================
-   自訂樣式（由原 index.html <style> 移植）
-   ============================================================ */
 
 /* 捲軸 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0e18;
+  background: var(--color-mist-2);
 }
 ::-webkit-scrollbar-thumb {
-  background: #262a35;
+  background: #c6c7c3;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4cd7f6;
+  background: var(--color-blue);
 }
 
-/* 經歷跳轉高亮動畫 */
-@keyframes highlightPulse {
-  0%,
-  100% {
-    background-color: transparent;
-  }
-  30% {
-    background-color: rgba(76, 215, 246, 0.18);
-  }
+/* 進場淡入（IntersectionObserver 加上 .is-visible） */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.exp-highlight {
-  animation: highlightPulse 2.2s ease-in-out;
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
-/* STAMPS 主圖絲滑淡入淡出與文字過渡 */
+/* 活動戳記輪播：主圖雙層 crossfade + 文字淡入 + 縮圖 FLIP */
 .stamp-main-img-layer {
   transition:
     opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
