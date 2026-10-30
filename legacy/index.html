@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="zh-TW">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="web_standard" name="shell-type"/>
+    <title>AI Systems &amp; Software Engineer Portfolio</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <style>
+        @layer base {
+            html, body { margin: 0; padding: 0; }
+            body { overscroll-behavior: none; }
+            main > :first-child { margin-top: 0 !important; }
+            main > :last-child { margin-bottom: 0 !important; }
+            /* 全站改為直角 */
+            *, *::before, *::after {
+                border-radius: 0px !important;
+            }
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0e18; }
+        ::-webkit-scrollbar-thumb { background: #262a35; }
+        ::-webkit-scrollbar-thumb:hover { background: #4cd7f6; }
+
+        /* 經歷跳轉高亮動畫 */
+        @keyframes highlightPulse {
+            0%, 100% { background-color: transparent; }
+            30% { background-color: rgba(76, 215, 246, 0.18); }
+        }
+        .exp-highlight {
+            animation: highlightPulse 2.2s ease-in-out;
+        }
+
+        /* STAMPS 主圖絲滑淡入淡出與文字過渡 */
+        .stamp-main-img-layer {
+            transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform;
+        }
+        .stamp-text-fade {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .stamp-thumb {
+            will-change: transform, opacity;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#001f26",
+                        "on-secondary-fixed": "#07006c",
+                        "secondary-fixed": "#e1e0ff",
+                        "surface-bright": "#353944",
+                        "on-primary-container": "#00424f",
+                        "on-secondary-container": "#b0b2ff",
+                        "tertiary-fixed-dim": "#adc6ff",
+                        "secondary-container": "#3131c0",
+                        "on-primary": "#003640",
+                        "tertiary": "#adc6ff",
+                        "on-tertiary-fixed": "#001a42",
+                        "on-tertiary-fixed-variant": "#004395",
+                        "surface-tint": "#4cd7f6",
+                        "surface-variant": "#313540",
+                        "surface-container-low": "#171b26",
+                        "primary-fixed-dim": "#4cd7f6",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#869397",
+                        "tertiary-fixed": "#d8e2ff",
+                        "primary-fixed": "#acedff",
+                        "on-secondary": "#1000a9",
+                        "primary": "#4cd7f6",
+                        "inverse-primary": "#00687a",
+                        "surface-container-high": "#262a35",
+                        "inverse-surface": "#dfe2f1",
+                        "on-surface": "#dfe2f1",
+                        "surface": "#0f131d",
+                        "surface-container-lowest": "#0a0e18",
+                        "surface-container": "#1c1f2a",
+                        "inverse-on-surface": "#2c303b",
+                        "outline-variant": "#3d494c",
+                        "on-error": "#690005",
+                        "surface-dim": "#0f131d",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "secondary": "#c0c1ff",
+                        "tertiary-container": "#78a5ff",
+                        "on-background": "#dfe2f1",
+                        "on-tertiary-container": "#00397f",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#313540",
+                        "background": "#0f131d",
+                        "on-primary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#bcc9cd",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#002e6a",
+                        "primary-container": "#06b6d4",
+                        "secondary-fixed-dim": "#c0c1ff"
+                    },
+                    borderRadius: {
+                        "none": "0px",
+                        "sm": "0px",
+                        "DEFAULT": "0px",
+                        "md": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "2xl": "0px",
+                        "3xl": "0px",
+                        "full": "0px"
+                    },
+                    fontFamily: {
+                        "code-inline": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-caption": ["Inter"],
+                        "code-block": ["JetBrains Mono"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-hero-mobile": ["Plus Jakarta Sans"],
+                        "display-hero": ["Plus Jakarta Sans"],
+                        "label-badge": ["JetBrains Mono"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "code-inline": ["13px", { lineHeight: "20px", letterSpacing: "-0.01em", fontWeight: "500" }],
+                        "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "400" }],
+                        "body-sm": ["13px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "400" }],
+                        "label-caption": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+                        "code-block": ["14px", { lineHeight: "22px", letterSpacing: "0", fontWeight: "400" }],
+                        "headline-lg": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "display-hero-mobile": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "display-hero": ["64px", { lineHeight: "72px", letterSpacing: "-0.03em", fontWeight: "800" }],
+                        "label-badge": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "body-md": ["15px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "400" }],
+                        "headline-sm": ["18px", { lineHeight: "26px", letterSpacing: "0", fontWeight: "600" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "700" }]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ==================== 固定頁眉 (動態滑動底色塊導覽列) ==================== -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
+    <div class="h-20 max-w-7xl mx-auto px-4 sm:px-6 flex items-stretch justify-center overflow-x-auto">
+        <nav class="relative flex items-stretch" id="top-nav">
+            <!-- 動態平滑滑動背景色塊 -->
+            <div id="nav-indicator" class="absolute top-0 bottom-0 left-0 bg-primary transition-all duration-300 ease-out pointer-events-none z-0"></div>
+
+            <a aria-current="page" class="nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg transition-colors duration-200 text-on-primary-fixed font-bold whitespace-nowrap" data-section="home" href="#home">關於我</a>
+            <a class="nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 whitespace-nowrap" data-section="stamps" href="#stamps">活動戳記</a>
+            <a class="nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 whitespace-nowrap" data-section="projects" href="#projects">參與專案</a>
+            <a class="nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 whitespace-nowrap" data-section="experiences" href="#experiences">競賽經歷</a>
+            <a class="nav-link relative z-10 h-full flex items-center px-5 sm:px-8 font-body-lg text-body-md sm:text-body-lg text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 whitespace-nowrap" data-section="contact" href="#contact">聯繫方式</a>
+        </nav>
+    </div>
+</header>
+
+<main class="w-full pt-20 bg-surface">
+
+    <!-- ==================== 1. 首頁區段 (#home：包含 Hero、ABOUT ME、CAPABILITIES) ==================== -->
+    <div id="home" class="scroll-mt-20">
+
+        <!-- 1-1. 首頁第一屏 Hero (獨立一個視窗大小) -->
+        <section class="relative w-full min-h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-surface py-12">
+            <div class="pointer-events-none absolute -top-24 left-1/4 h-96 w-96 bg-primary/10 blur-[120px]"></div>
+            <div class="pointer-events-none absolute top-1/3 -right-24 h-[450px] w-[450px] bg-secondary-container/20 blur-[140px]"></div>
+            <div class="pointer-events-none absolute bottom-0 left-10 h-72 w-72 bg-primary-container/10 blur-[100px]"></div>
+            <div class="w-full max-w-7xl mx-auto px-6 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                    <!-- 左側大標題與按鈕 -->
+                    <div class="lg:col-span-7 flex flex-col items-start space-y-8">
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 font-code-block text-code-block text-primary">
+                                <span class="text-tertiary">system.role</span>
+                                <span class="text-on-surface-variant">=</span>
+                                <span class="text-primary-fixed">"Vision &amp; Multimodal Architect"</span>
+                            </div>
+                            <h1 class="font-display-hero text-headline-lg sm:text-display-hero-mobile xl:text-display-hero font-extrabold text-on-surface tracking-tight leading-tight">
+                                專注於電腦視覺與<br class="hidden sm:inline"/>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">多模態系統</span> 的<br/>
+                                AI 軟體工程師
+                            </h1>
+                            <p class="font-headline-sm text-headline-sm text-tertiary-fixed-dim font-medium tracking-normal pt-1 max-w-xl">
+                                Bridging bleeding-edge Deep Learning research with production-grade distributed systems.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                            <a class="inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-fixed font-headline-sm text-body-md font-bold shadow-[0_0_24px_rgba(6,182,212,0.35)] hover:shadow-[0_0_32px_rgba(6,182,212,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="#contact">
+                                <span class="material-symbols-outlined text-[20px]">download</span>
+                                <span>下載完整履歷 (PDF)</span>
+                            </a>
+                            <a class="inline-flex items-center gap-2 px-4 py-3 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-badge text-label-badge transition-all hover:scale-[1.02]" href="https://github.com" rel="noopener noreferrer" target="_blank">
+                                <span class="material-symbols-outlined text-primary text-[18px]">code</span>
+                                <span>GitHub (20+ Repos)</span>
+                            </a>
+                            <a class="inline-flex items-center gap-2 px-4 py-3 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-badge text-label-badge transition-all hover:scale-[1.02]" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
+                                <span class="material-symbols-outlined text-tertiary text-[18px]">share</span>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a class="inline-flex items-center gap-2 px-4 py-3 bg-surface-container-low hover:bg-surface-container text-primary-fixed-dim font-label-badge text-label-badge transition-all" href="#contact">
+                                <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                                <span>預約技術交流</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- 右側形象照與指標 -->
+                    <div class="lg:col-span-5 relative flex justify-center lg:justify-end py-4">
+                        <div class="relative w-full max-w-[340px] xl:max-w-[400px] aspect-square bg-surface-container-low p-2 shadow-2xl border border-outline-variant/30">
+                            <div class="relative w-full h-full overflow-hidden bg-surface-container-highest">
+                                <img alt="AI Software Engineer Profile" class="w-full h-full object-cover object-center filter contrast-[1.03] brightness-[0.98]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo98IeVkVVflaoGaGH_u5YG4FYNRyO1RSpVEcPbqN1dqHWECCLOp92vLqDvC0lNFasI6t89J7WKrVouqP0s3qMIVD3xxw3Hc5x1_nGBWovTvz-QN_Xac-bY1qyvDu3hZOBuJSSOIy2mqlVznEPab4NYsy8cqyTd3FdloS0M_5kvGfpyD9qGR1pXNC2bvaKV_OwsLma48GtTVCwr-Ww81aN5fHBaIWC-Bp6gBFZ"/>
+                                <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent"></div>
+                                <div class="absolute bottom-3 left-3 right-3 px-3 py-2 bg-surface-container-lowest/85 backdrop-blur-md flex items-center justify-between border border-outline-variant/30">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 bg-primary animate-pulse"></span>
+                                        <span class="font-code-inline text-code-inline text-on-surface font-medium">engine_session: active</span>
+                                    </div>
+                                    <span class="font-code-inline text-label-caption text-primary">CUDA::ARCH_90</span>
+                                </div>
+                            </div>
+                            <div class="absolute -top-5 -left-4 sm:-left-8 bg-surface-container-high/95 backdrop-blur-xl px-4 py-3 shadow-xl flex items-center gap-3 border border-outline-variant/40">
+                                <div class="w-10 h-10 bg-primary-container/20 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-[22px]">speed</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-label-caption text-label-caption text-on-surface-variant uppercase tracking-wider">Inference Speed</span>
+                                    <span class="font-code-block text-headline-sm font-bold text-on-surface">120+ <span class="text-primary text-code-inline font-normal">FPS (TensorRT)</span></span>
+                                </div>
+                            </div>
+                            <div class="absolute -bottom-5 -right-4 sm:-right-6 bg-surface-container-high/95 backdrop-blur-xl px-4 py-3 shadow-xl flex items-center gap-3 border border-outline-variant/40">
+                                <div class="w-10 h-10 bg-secondary-container/30 flex items-center justify-center text-secondary">
+                                    <span class="material-symbols-outlined text-[22px]">target</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-label-caption text-label-caption text-on-surface-variant uppercase tracking-wider">Vision Benchmark</span>
+                                    <span class="font-code-block text-headline-sm font-bold text-on-surface">94.2% <span class="text-secondary text-code-inline font-normal">mAP@0.5</span></span>
+                                </div>
+                            </div>
+                            <div class="absolute top-1/2 -left-8 -translate-y-1/2 hidden xl:flex bg-surface-container-lowest/95 backdrop-blur-md px-3.5 py-2.5 shadow-lg flex-col gap-1 border border-outline-variant/40">
+                                <span class="font-label-caption text-label-caption text-on-surface-variant">Production Deployed</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-code-block text-body-lg font-bold text-primary">12+ Models</span>
+                                    <span class="font-code-inline text-label-caption text-outline">Triton/k8s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1-2. ABOUT ME 區塊 (至少獨立一個視窗大小) -->
+        <section id="about" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface-container-lowest py-20 px-6 border-t border-outline-variant/20">
+            <div class="max-w-5xl w-full mx-auto flex flex-col items-center text-center space-y-12">
+                <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                    ABOUT ME
+                </h2>
+
+                <!-- 250字自我介紹 -->
+                <div class="max-w-3xl bg-surface-container-low/80 p-7 sm:p-9 border border-outline-variant/30 shadow-lg text-left sm:text-center">
+                    <p class="font-body-lg text-body-md sm:text-body-lg text-on-surface leading-relaxed">
+                        目前就讀逢甲大學資訊工程學系，在學期間長期投入 ACM-ICPC 程式競賽，建立紮實的演算法基礎，並於 2024 及 2026 年擔任系上 C/C++ 程式設計助教，透過引導學生除錯，培養出能將複雜程式邏輯轉化為清晰白話解說的溝通表達能力。除維持課業外，持續參與專案型投稿競賽以累積實戰經驗，擅長運用 AI 輔助工具加速開發迭代，核心專注於影像辨識與全端系統開發。
+                    </p>
+                </div>
+
+                <!-- 四個核心標籤：GPA、競賽參與量、學術累積、專案參與量 -->
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
+                    <div class="flex flex-col items-center p-6 bg-surface-container-low border border-outline-variant/30 hover:border-primary/60 transition-all">
+                        <span class="font-code-inline text-label-badge text-primary uppercase tracking-wider mb-2">GPA</span>
+                        <span class="font-display-hero text-headline-lg font-extrabold text-on-surface">3.8 <span class="text-body-md font-normal text-outline">/ 4.3</span></span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant mt-2">逢甲資工系前23%</span>
+                    </div>
+                    <div class="flex flex-col items-center p-6 bg-surface-container-low border border-outline-variant/30 hover:border-secondary/60 transition-all">
+                        <span class="font-code-inline text-label-badge text-secondary uppercase tracking-wider mb-2">競賽參與</span>
+                        <span class="font-display-hero text-headline-lg font-extrabold text-on-surface">8+ <span class="text-body-md font-normal text-outline">場競賽</span></span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant mt-2">黑客松、專案投稿競賽、程式競賽</span>
+                    </div>
+                    <div class="flex flex-col items-center p-6 bg-surface-container-low border border-outline-variant/30 hover:border-tertiary/60 transition-all">
+                        <span class="font-code-inline text-label-badge text-tertiary uppercase tracking-wider mb-2">學術累積</span>
+                        <span class="font-display-hero text-headline-lg font-extrabold text-on-surface">2 <span class="text-body-md font-normal text-outline">項核心研究</span></span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant mt-2">國科會大專生研究計畫 + ICIC 研討會論文發表</span>
+                    </div>
+                    <div class="flex flex-col items-center p-6 bg-surface-container-low border border-outline-variant/30 hover:border-primary-fixed/60 transition-all">
+                        <span class="font-code-inline text-label-badge text-primary-fixed uppercase tracking-wider mb-2">專案參與量</span>
+                        <span class="font-display-hero text-headline-lg font-extrabold text-on-surface">12+ <span class="text-body-md font-normal text-outline">個系統</span></span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant mt-2">涵蓋科技執法、盲人輔助與藝術治療等</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1-3. CAPABILITIES 區塊 (至少獨立一個視窗大小 + 四大方向方格內含細項) -->
+        <!-- 1-3. CAPABILITIES 區塊 (四大方向方格內含細項) -->
+        <section id="capabilities" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface py-20 px-6 border-t border-outline-variant/20">
+            <div class="max-w-7xl w-full mx-auto space-y-12">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                        CAPABILITIES
+                    </h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        點擊任一能力方格，將自動捲動至「參與專案」並篩選對應技術領域之案件
+                    </p>
+                </div>
+
+                <!-- 四格大方向能力矩陣 (由左至右) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- 大方向 1: Computer Vision & Edge -->
+                    <div onclick="jumpToProjectsWithCategory('cv', 'project-traffic')" class="cursor-pointer group flex flex-col justify-between p-6 bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 hover:border-primary transition-all shadow-md">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary-fixed transition-colors">
+                                    <span class="material-symbols-outlined text-[26px]">visibility</span>
+                                </div>
+                                <span class="font-code-inline text-label-badge text-outline group-hover:text-primary flex items-center gap-1">
+                                    <span>01 // CV & EDGE</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+                                </span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2 group-hover:text-primary transition-colors">
+                                電腦視覺與邊緣部署
+                            </h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 leading-relaxed">
+                                專精物件偵測、多目標追蹤與 3D 卷積分類，並具備將輕量化視覺模型部署至 Raspberry Pi 等邊緣裝置的實戰經驗。
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-outline-variant/25">
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">YOLO</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">BoT-SORT</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">3D CNN</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">OpenCV</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">Raspberry Pi</span>
+                        </div>
+                    </div>
+
+                    <!-- 大方向 2: Multimodal & RAG -->
+                    <div onclick="jumpToProjectsWithCategory('vlm', 'project-guidesense')" class="cursor-pointer group flex flex-col justify-between p-6 bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 hover:border-secondary transition-all shadow-md">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 bg-surface-container-high flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary-fixed transition-colors">
+                                    <span class="material-symbols-outlined text-[26px]">psychology</span>
+                                </div>
+                                <span class="font-code-inline text-label-badge text-outline group-hover:text-secondary flex items-center gap-1">
+                                    <span>02 // AI & RAG</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+                                </span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2 group-hover:text-secondary transition-colors">
+                                多模態 AI 與檢索增強
+                            </h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 leading-relaxed">
+                                整合視覺語言模型 (VLM)、大型語言模型 (LLM) 與 RAG 技術，結合毫米波雷達等異質感測器達成情境理解。
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-outline-variant/25">
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">VLM</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">LLM</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">RAG</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">毫米波雷達</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">OpenAI API</span>
+                        </div>
+                    </div>
+
+                    <!-- 大方向 3: Backend & Integration -->
+                    <div onclick="jumpToProjectsWithCategory('edge', 'project-traffic')" class="cursor-pointer group flex flex-col justify-between p-6 bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 hover:border-tertiary transition-all shadow-md">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 bg-surface-container-high flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary-fixed transition-colors">
+                                    <span class="material-symbols-outlined text-[26px]">api</span>
+                                </div>
+                                <span class="font-code-inline text-label-badge text-outline group-hover:text-tertiary flex items-center gap-1">
+                                    <span>03 // BACKEND</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+                                </span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2 group-hover:text-tertiary transition-colors">
+                                後端開發與系統整合
+                            </h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 leading-relaxed">
+                                熟練運用 FastAPI 開發 REST API 與推論服務，並能利用 Kafka 等訊息佇列處理系統間的高效資料流整合。
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-outline-variant/25">
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">FastAPI</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">Kafka</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">REST API</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">WebSocket</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <!-- 大方向 4: Data & Storage Infra -->
+                    <div onclick="jumpToProjectsWithCategory('edge', 'project-artecho')" class="cursor-pointer group flex flex-col justify-between p-6 bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 hover:border-primary-fixed transition-all shadow-md">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 bg-surface-container-high flex items-center justify-center text-primary-fixed group-hover:bg-primary-fixed group-hover:text-on-primary-fixed transition-colors">
+                                    <span class="material-symbols-outlined text-[26px]">database</span>
+                                </div>
+                                <span class="font-code-inline text-label-badge text-outline group-hover:text-primary-fixed flex items-center gap-1">
+                                    <span>04 // STORAGE</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+                                </span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2 group-hover:text-primary-fixed transition-colors">
+                                資料管理與儲存架構
+                            </h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 leading-relaxed">
+                                具備關聯式與非關聯式資料庫管理應用，涵蓋多媒體檔案物件儲存以及即時資料驗證之完整後端架構經歷。
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-outline-variant/25">
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">PostgreSQL</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">Firebase</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">MySQL</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">S3 / MinIO</span>
+                            <span class="px-2.5 py-1 bg-surface-container-high text-on-surface font-label-badge text-label-badge">Python</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== 2. 活動戳記區段 (#stamps：抓 stamps 資料夾、1..n/2 與 n/2+1..n 雙排替補、絲滑輪替) ==================== -->
+    <section id="stamps" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface-container-lowest py-20 px-6 border-t border-outline-variant/30 scroll-mt-20">
+        <div class="max-w-7xl w-full mx-auto space-y-10">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                    STAMPS
+                </h2>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container font-code-inline text-label-caption text-primary border border-outline-variant/30">
+                        <span class="w-2 h-2 bg-primary animate-ping"></span>
+                        <span>AUTO-ROTATING GALLERY</span>
+                    </span>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant hidden md:inline">
+                        動態讀取 <code class="text-primary font-code-inline">stamps/</code> 資料夾照片，自動絲滑替補輪播
+                    </p>
+                </div>
+            </div>
+
+            <!-- 左側大圖展示 (雙圖層 Crossfade) + 右側雙排 (1..n/2 與 n/2+1..n) 獨立等距候選隊伍 -->
+            <div id="stamps-interactive-wrapper" class="flex flex-col lg:flex-row gap-6 items-stretch lg:h-[520px]">
+
+                <!-- 左側：主展示照片 + 下方簡短敘述 -->
+                <div class="w-full lg:w-[440px] xl:w-[480px] shrink-0 flex flex-col bg-surface-container-low overflow-hidden border border-outline-variant/40 shadow-xl">
+                    <div class="relative w-full h-72 lg:h-auto lg:flex-1 overflow-hidden bg-surface-container-lowest">
+                        <!-- 雙圖層實現絲滑無縫 Crossfade -->
+                        <img id="stamp-featured-img-a" src="" alt="Featured Event Stamp" class="stamp-main-img-layer absolute inset-0 w-full h-full object-cover opacity-100 scale-100"/>
+                        <img id="stamp-featured-img-b" src="" alt="Featured Event Stamp" class="stamp-main-img-layer absolute inset-0 w-full h-full object-cover opacity-0 scale-[1.03]"/>
+
+                        <div class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-primary border border-outline-variant/30" id="stamp-featured-tag">
+                            STAMPS GALLERY
+                        </div>
+                        <!-- 底部 2.5 秒進度條 -->
+                        <div class="absolute bottom-0 left-0 right-0 z-10 h-1 bg-surface-container-highest overflow-hidden">
+                            <div id="stamp-progress-bar" class="h-full bg-primary transition-all duration-75 ease-linear" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div id="stamp-text-box" class="stamp-text-fade p-5 bg-surface-container-low border-t border-outline-variant/30">
+                        <h3 id="stamp-featured-title" class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">
+                            活動紀錄照片
+                        </h3>
+                        <p id="stamp-featured-desc" class="font-body-sm text-body-sm text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2">
+                            隨機捕捉活動瞬間，展現豐富的專案實作與技術交流足跡。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 右側：上下兩排獨立 Flex 容器 (上排 1..n/2，下排 n/2+1..n)，每張圖片固定間隔 gap-4 -->
+                <div class="flex-1 overflow-x-auto overflow-y-hidden pb-2 lg:pb-0">
+                    <div class="flex flex-col gap-4 h-[360px] lg:h-full justify-between" id="stamp-candidates">
+                        <!-- 第一排：放置隊伍前半部 (1, 2, ..., n/2) -->
+                        <div id="stamp-row-1" class="flex items-stretch gap-4 h-[calc(50%-0.5rem)]"></div>
+                        <!-- 第二排：放置隊伍後半部 (n/2+1, ..., n) -->
+                        <div id="stamp-row-2" class="flex items-stretch gap-4 h-[calc(50%-0.5rem)]"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. 參與專案區段 (#projects：至少獨立一個視窗大小) ==================== -->
+    <section id="projects" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface py-24 px-6 border-t border-outline-variant/30 scroll-mt-20">
+        <div class="max-w-7xl w-full mx-auto space-y-12">
+
+            <!-- 標題與主題篩選器 -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="space-y-2">
+                    <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                        PROJECTS
+                    </h2>
+                </div>
+
+                <!-- 主題標籤篩選列 -->
+                <div class="flex items-center flex-wrap gap-2 p-1.5 bg-surface-container-lowest border border-outline-variant/30" id="project-filter-group">
+                    <button type="button" class="project-filter-btn px-4 py-2 font-label-badge text-label-badge bg-primary text-on-primary-fixed font-bold transition-all" data-filter="all">
+                        全部依時間排序 (All: 3)
+                    </button>
+                    <button type="button" class="project-filter-btn px-4 py-2 font-label-badge text-label-badge text-on-surface-variant hover:text-primary transition-all" data-filter="cv">
+                        電腦視覺 (Computer Vision)
+                    </button>
+                    <button type="button" class="project-filter-btn px-4 py-2 font-label-badge text-label-badge text-on-surface-variant hover:text-primary transition-all" data-filter="vlm">
+                        多模態與 VLM
+                    </button>
+                    <button type="button" class="project-filter-btn px-4 py-2 font-label-badge text-label-badge text-on-surface-variant hover:text-primary transition-all" data-filter="edge">
+                        邊緣端與 MLOps
+                    </button>
+                </div>
+            </div>
+
+            <!-- 專案卡片容器 -->
+            <div class="flex flex-col gap-12" id="projects-container">
+
+                <!-- 專案 1 (2025.09 - 最新)：智慧交通違規科技執法系統 -->
+                <article id="project-traffic" class="project-card grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8 bg-surface-container-low border border-outline-variant/30 transition-all duration-500 items-stretch" data-categories="cv edge" data-date="2025-09" style="order: 1;">
+
+                    <!-- 左欄 (7 Cols) -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-1 bg-surface-container font-code-inline text-label-caption text-primary">2025.09 // PRODUCTION SYSTEM</span>
+                                <span class="font-code-inline text-label-caption text-on-surface-variant">Jetson AGX Orin • CUDA</span>
+                            </div>
+
+                            <div>
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+                                    智慧交通違規多目標辨識與追蹤科技執法系統
+                                </h3>
+                                <p class="font-code-inline text-code-inline text-primary-fixed-dim mt-0.5">
+                                    Automated Traffic Enforcement &amp; Multi-Object Tracking Platform
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 bg-surface-container-high font-label-badge text-label-badge text-primary">YOLOv8 / ByteTrack</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">TensorRT INT8 PTQ</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">FastAPI</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">Redis Stream</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">Firebase Firestore</span>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-error">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-error mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">crisis_alert</span>
+                                    <span>痛點 (PAIN POINT)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    傳統路口科技執法因尖峰車流密集遮擋（Occlusion）易產生軌跡中斷與誤檢，且高精準度重型網路無法於邊緣硬體維持 30+ FPS 即時運算，導致雲端串流頻寬與人工覆核成本極高。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-tertiary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-tertiary mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">description</span>
+                                    <span>概述 (OVERVIEW)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    建構端到端邊緣智慧執法與案件覆核平台，結合多目標持續追蹤、違規關鍵影格（Keyframe）自動擷取規則與即時後端驗證介面，實現低延遲多路 RTSP 串流自動化違規舉發。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-primary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-primary mb-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">engineering</span>
+                                    <span>我的貢獻 (MY CONTRIBUTIONS)</span>
+                                </div>
+                                <ul class="space-y-1.5 font-body-sm text-body-sm text-on-surface-variant">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-primary font-bold">›</span>
+                                        <span>主導模型結構化剪枝與 TensorRT INT8 量化，模型體積壓縮 60%，於邊緣端達成 45 FPS 穩定推論。</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-primary font-bold">›</span>
+                                        <span>設計 ByteTrack 軌跡關聯與多邊形 IoU 違規關鍵影格擷取邏輯，並以 FastAPI + Redis 解耦高併發串流。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <a href="#exp-hackathon-2024" onclick="highlightExperience('exp-hackathon-2024')" class="group block p-4 bg-surface-container-high hover:bg-primary/15 border border-primary/40 transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-primary">
+                                    <span class="material-symbols-outlined text-[16px]">military_tech</span>
+                                    <span>成果與榮譽 (OUTCOME — 點擊跳轉至對應競賽經歷)</span>
+                                </div>
+                                <span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-1 transition-transform">arrow_downward</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-primary">-78% 誤檢率</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">大幅降低人工覆核成本</p>
+                                </div>
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-on-surface">總統盃 / PUPC 銀獎</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">45 FPS 多路實地路口驗證</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 右欄 (5 Cols) -->
+                    <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                        <div class="relative overflow-hidden bg-surface-container-lowest border border-outline-variant/30">
+                            <img class="w-full h-56 sm:h-60 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6DMVfB-D76guON1aT2_lYTazNs2bbxyVlaTKHyX7ssX4SYo-g2fqjst_FTecU9tbGJ0H9F2MKwTxQdPW_zPCDmQa2DWHoLRdCbPvyIRNg3bqMqX7Uor7smQoKXhDdiCyO_F-zPf-P2Zu3dCmfblzoePAUbjdYev5ysHNonLcNBSNmqlC41QtQ0kAxH3PEd-0iBNH572qVc5NSm44JGIvGHlyc_DgL9_ZSa42i" alt="Traffic System UI"/>
+                            <div class="absolute top-3 left-3 flex items-center gap-2 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-on-surface">
+                                <span class="w-2 h-2 bg-error animate-ping"></span>
+                                <span>系統畫面 // CAM-04A 違規偵測</span>
+                            </div>
+                            <div class="absolute bottom-3 right-3 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-primary">
+                                TensorRT: 21.8ms (45.2 FPS)
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between p-4 bg-surface-container border border-outline-variant/25">
+                            <div class="flex items-center justify-between text-label-caption font-code-inline text-on-surface-variant mb-2">
+                                <span>專案模擬示意圖 // 軌跡追蹤與 FPS 穩定度模擬</span>
+                                <span class="text-primary font-bold">ByteTrack + Kalman</span>
+                            </div>
+                            <div class="w-full h-24 flex items-center">
+                                <svg class="w-full h-full stroke-primary fill-transparent overflow-visible" viewBox="0 0 300 70">
+                                    <line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="2,4" x1="0" x2="300" y1="15" y2="15"></line>
+                                    <line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="2,4" x1="0" x2="300" y1="50" y2="50"></line>
+                                    <path class="text-primary" d="M 0 42 L 30 36 L 60 40 L 90 28 L 120 25 L 150 30 L 180 22 L 210 20 L 240 24 L 270 19 L 300 18" stroke="currentColor" stroke-width="2.2"></path>
+                                    <path class="fill-primary/15" d="M 0 42 L 30 36 L 60 40 L 90 28 L 120 25 L 150 30 L 180 22 L 210 20 L 240 24 L 270 19 L 300 18 L 300 68 L 0 68 Z" stroke="none"></path>
+                                    <circle class="fill-primary" cx="180" cy="22" r="3.5"></circle>
+                                    <text class="fill-primary font-code-inline text-[9px]" x="145" y="12">Keyframe Triggered</text>
+                                </svg>
+                            </div>
+                            <div class="flex justify-between font-code-inline text-label-caption text-outline pt-1">
+                                <span>RTSP Ingest</span>
+                                <span>INT8 Inference</span>
+                                <span>Violation Verified</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-primary text-on-primary-fixed font-label-badge text-label-badge font-bold hover:opacity-90 transition-all shadow-md">
+                                <span class="material-symbols-outlined text-[18px]">code</span>
+                                <span>GitHub Repo 連結</span>
+                            </a>
+                            <button type="button" onclick="toggleModal('modal-traffic')" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-badge text-label-badge font-semibold transition-all">
+                                <span class="material-symbols-outlined text-[18px]">schema</span>
+                                <span>系統架構拓撲</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 專案 2 (2024.11)：GuideSense 視障者多模態空間導引系統 -->
+                <article id="project-guidesense" class="project-card grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8 bg-surface-container-low border border-outline-variant/30 transition-all duration-500 items-stretch" data-categories="vlm edge" data-date="2024-11" style="order: 2;">
+
+                    <!-- 左欄 (7 Cols) -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-1 bg-secondary-container font-code-inline text-label-caption text-on-secondary-container">2024.11 // NSTC FUNDED RESEARCH</span>
+                                <span class="font-code-inline text-label-caption text-secondary">60GHz mmWave + VLM</span>
+                            </div>
+
+                            <div>
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+                                    GuideSense — 視障者多模態穿戴式空間導引與避障系統
+                                </h3>
+                                <p class="font-code-inline text-code-inline text-secondary mt-0.5">
+                                    Wearable mmWave Radar &amp; Vision-Language Spatial Navigation System
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 bg-surface-container-high font-label-badge text-label-badge text-secondary">VLM (MiniCPM-V)</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">TI IWR6843 mmWave</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">3D CNN PointCloud</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">FastAPI WebSocket</span>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-error">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-error mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">accessibility_new</span>
+                                    <span>痛點 (PAIN POINT)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    傳統導盲杖與超音波僅能偵測單點距離，缺乏「空間語意理解」且無法預警懸空障礙物；純視覺相機則在強光眩光、夜間或雨霧環境下極易失效。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-tertiary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-tertiary mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">description</span>
+                                    <span>概述 (OVERVIEW)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    結合抗候性 60GHz 毫米波雷達 3D 點雲與輕量化視覺語言模型（VLM），建構穿戴式全天候空間感知系統，將前方障礙物方位、距離與語意即時轉為低延遲語音導引。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-secondary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-secondary mb-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">engineering</span>
+                                    <span>我的貢獻 (MY CONTRIBUTIONS)</span>
+                                </div>
+                                <ul class="space-y-1.5 font-body-sm text-body-sm text-on-surface-variant">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-secondary font-bold">›</span>
+                                        <span>設計 3D CNN 跨模態特徵對齊網路，融合毫米波雷達稀疏點雲與 RGB 影像特徵，克服背光與視線死角。</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-secondary font-bold">›</span>
+                                        <span>微調輕量化 VLM 並建構雙向音訊串流管線，將端到端語音導引延遲壓縮至 114ms 以內。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <a href="#exp-mmwave-2024" onclick="highlightExperience('exp-mmwave-2024')" class="group block p-4 bg-surface-container-high hover:bg-secondary/15 border border-secondary/40 transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-secondary">
+                                    <span class="material-symbols-outlined text-[16px]">workspace_premium</span>
+                                    <span>成果與榮譽 (OUTCOME — 點擊跳轉至對應競賽與國科會經歷)</span>
+                                </div>
+                                <span class="material-symbols-outlined text-[18px] text-secondary group-hover:translate-x-1 transition-transform">arrow_downward</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-secondary">全國第二名 (亞軍)</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">全國毫米波雷達智慧感測競賽</p>
+                                </div>
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-primary">國科會計畫核定</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">大專學生研究計畫補助執行</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 右欄 (5 Cols) -->
+                    <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                        <div class="relative overflow-hidden bg-surface-container-lowest border border-outline-variant/30">
+                            <img class="w-full h-56 sm:h-60 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkl7wnTkGqVVdUU3COkZg-GAb9brMWsRxRGg1RCUSV4n8IjqZaKVMZj2PrcaQ4twMZjRmJ41tSL-BavAWdC1ubzjV7f5NvpC3rGFvzpUkCrX_9pJ8kvm_Hy10SLwW2kU-ZibgH2Qvd-As6d_r9Fnp5Gn0NDB4dvOCgUexbMU1zAshrFdGTR6F2QZ7gGvQAU6tIlyjjsH1YEasyk2Md_7Y6HPB-Ybq4jMvhvxEP" alt="GuideSense UI"/>
+                            <div class="absolute top-3 left-3 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-secondary">
+                                系統畫面 // 點雲與 VLM 空間融合
+                            </div>
+                            <div class="absolute bottom-3 right-3 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-on-surface">
+                                E2E Latency: 114 ms
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between p-4 bg-surface-container border border-outline-variant/25">
+                            <div class="flex items-center justify-between text-label-caption font-code-inline text-on-surface-variant mb-2">
+                                <span>專案模擬示意圖 // 扇形雷達點雲聚類與距離扇區</span>
+                                <span class="text-secondary font-bold">3D Conv Mesh</span>
+                            </div>
+                            <div class="w-full h-24 flex items-center justify-center">
+                                <svg class="w-full h-full text-secondary fill-transparent" viewBox="0 0 260 80">
+                                    <path class="fill-secondary/10 stroke-outline-variant/40" d="M 130 75 L 30 15 A 120 120 0 0 1 230 15 Z" stroke-width="1"></path>
+                                    <path class="stroke-outline-variant/30" d="M 130 75 L 60 30 A 80 80 0 0 1 200 30 Z" stroke-dasharray="2,2"></path>
+                                    <circle class="fill-primary" cx="95" cy="40" r="4"></circle>
+                                    <circle class="fill-primary/60" cx="102" cy="44" r="3"></circle>
+                                    <circle class="fill-secondary animate-pulse" cx="155" cy="30" r="5"></circle>
+                                    <circle class="fill-secondary/70" cx="162" cy="32" r="3"></circle>
+                                    <text class="fill-on-surface-variant font-code-inline text-[9px]" text-anchor="middle" x="130" y="72">Wearable Sensor Origin</text>
+                                    <text class="fill-secondary font-code-inline text-[9px]" x="170" y="28">懸空障礙 (1.8m)</text>
+                                </svg>
+                            </div>
+                            <div class="flex justify-between font-code-inline text-label-caption text-outline pt-1">
+                                <span>60GHz Radar</span>
+                                <span>Cross-Attention</span>
+                                <span>Audio Stream</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-primary text-on-primary-fixed font-label-badge text-label-badge font-bold hover:opacity-90 transition-all shadow-md">
+                                <span class="material-symbols-outlined text-[18px]">code</span>
+                                <span>GitHub Repo 連結</span>
+                            </a>
+                            <button type="button" onclick="toggleModal('modal-guidesense')" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-badge text-label-badge font-semibold transition-all">
+                                <span class="material-symbols-outlined text-[18px]">account_tree</span>
+                                <span>模態管線拓撲</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 專案 3 (2024.05)：ArtEcho 多模態 RAG 藝術策展智慧導覽 -->
+                <article id="project-artecho" class="project-card grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8 bg-surface-container-low border border-outline-variant/30 transition-all duration-500 items-stretch" data-categories="vlm cv" data-date="2024-05" style="order: 3;">
+
+                    <!-- 左欄 (7 Cols) -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-1 bg-surface-container font-code-inline text-label-caption text-primary">2024.05 // EXHIBITION DEPLOYED</span>
+                                <span class="font-code-inline text-label-caption text-on-surface-variant">1,200+ 觀展互動</span>
+                            </div>
+
+                            <div>
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+                                    ArtEcho — 多模態檢索增強生成之藝術策展智慧導覽系統
+                                </h3>
+                                <p class="font-code-inline text-code-inline text-primary-fixed-dim mt-0.5">
+                                    Multimodal Self-RAG Art Curation &amp; Visual Retrieval System
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 bg-surface-container-high font-label-badge text-label-badge text-primary">Multimodal Self-RAG</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">CLIP ViT-L/14</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">ChromaDB / pgvector</span>
+                                <span class="px-2.5 py-1 bg-surface-container font-label-badge text-label-badge text-on-surface-variant">LangChain</span>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-error">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-error mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">museum</span>
+                                    <span>痛點 (PAIN POINT)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    傳統語音導覽機僅能單向播放固定腳本；而直接套用通用 LLM 解說本土畫作與生僻史料時，會產生高達 34% 的嚴重事實幻覺（Hallucination），缺乏史料引用根據。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-tertiary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-tertiary mb-1">
+                                    <span class="material-symbols-outlined text-[16px]">description</span>
+                                    <span>概述 (OVERVIEW)</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    打造支援「以圖搜史料、跨畫作風格比對」的多模態智慧導覽平台，透過雙編碼向量索引與自我反思驗證機制（Self-RAG），提供具備100%館藏出處標註的互動式導覽體驗。
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-surface-container border-l-2 border-primary">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-primary mb-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">engineering</span>
+                                    <span>我的貢獻 (MY CONTRIBUTIONS)</span>
+                                </div>
+                                <ul class="space-y-1.5 font-body-sm text-body-sm text-on-surface-variant">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-primary font-bold">›</span>
+                                        <span>使用 CLIP ViT-L/14 與 ChromaDB 建構十萬級圖文同構向量資料庫，實現毫秒級跨模態相似度檢索。</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-primary font-bold">›</span>
+                                        <span>實作 Self-RAG Critic 反思過濾節點，強制核對館藏文獻編號後才生成回答，將事實精準度推升至 96.5%。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <a href="#exp-nantou-2024" onclick="highlightExperience('exp-nantou-2024')" class="group block p-4 bg-surface-container-high hover:bg-primary/15 border border-primary/40 transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="flex items-center gap-1.5 font-code-inline text-label-badge text-primary">
+                                    <span class="material-symbols-outlined text-[16px]">show_chart</span>
+                                    <span>成果與榮譽 (OUTCOME — 點擊跳轉至對應創新競賽經歷)</span>
+                                </div>
+                                <span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-1 transition-transform">arrow_downward</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-primary">96.5% 查核精準度</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">有效抑制 LLM 史料幻覺</p>
+                                </div>
+                                <div>
+                                    <span class="font-code-block text-headline-sm font-bold text-on-surface">最佳技術創新獎</span>
+                                    <p class="font-label-caption text-label-caption text-on-surface-variant">展區停留互動時長提升 3.4 倍</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 右欄 (5 Cols) -->
+                    <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                        <div class="relative overflow-hidden bg-surface-container-lowest border border-outline-variant/30">
+                            <img class="w-full h-56 sm:h-60 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrMjbeuRP6RMcFX5sA8rWF6xZnv9NWqnPZ8RNvYvpD_rehlRsKkLKeBEvyGPWef6-GkCsCMoARQDngQqcqY152qr4Q5i-f7CbwwEt95DPvUmo1KrsY3u4hccXedNgk-Gd9DRgYjsRrZl9HIhpIOwOoupjAQleuUcadbZ8zLyvvGyCJMzqcPMaArEqG15q1ab5SrfmsCBzoYKhgBSZt2PjnjewbKmtCv6F4h9cq" alt="ArtEcho UI"/>
+                            <div class="absolute top-3 left-3 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-primary">
+                                系統畫面 // 跨模態向量檢索與溯源對話
+                            </div>
+                            <div class="absolute bottom-3 right-3 px-2.5 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-on-surface">
+                                Cosine Sim: 0.962
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between p-4 bg-surface-container border border-outline-variant/25 font-code-inline text-label-caption">
+                            <div class="flex items-center justify-between text-on-surface-variant mb-2">
+                                <span>專案模擬示意圖 // TOP-3 向量相似度分布</span>
+                                <span class="text-primary font-bold">HNSW Index</span>
+                            </div>
+                            <div class="space-y-2.5 my-auto">
+                                <div>
+                                    <div class="flex justify-between text-on-surface mb-1">
+                                        <span>Doc #8491 (館藏史料原文)</span>
+                                        <span class="text-primary font-bold">0.962</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+                                        <div class="h-full bg-primary" style="width: 96.2%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-on-surface mb-1">
+                                        <span>Doc #2203 (筆觸視覺特徵對齊)</span>
+                                        <span class="text-primary font-bold">0.894</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+                                        <div class="h-full bg-primary/70" style="width: 89.4%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-on-surface mb-1">
+                                        <span>Doc #5512 (時代背景交叉註解)</span>
+                                        <span class="text-primary font-bold">0.817</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+                                        <div class="h-full bg-primary/40" style="width: 81.7%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-primary text-on-primary-fixed font-label-badge text-label-badge font-bold hover:opacity-90 transition-all shadow-md">
+                                <span class="material-symbols-outlined text-[18px]">code</span>
+                                <span>GitHub Repo 連結</span>
+                            </a>
+                            <button type="button" onclick="toggleModal('modal-artecho')" class="inline-flex items-center justify-center gap-2 py-3 px-4 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-badge text-label-badge font-semibold transition-all">
+                                <span class="material-symbols-outlined text-[18px]">account_tree</span>
+                                <span>RAG 檢索拓撲</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 4. 經歷區段 (#experiences：至少獨立一個視窗大小、無外框分隔線時間軸 + 總證明) ==================== -->
+    <section id="experiences" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface-container-lowest py-24 px-6 border-t border-outline-variant/30 scroll-mt-20">
+        <div class="max-w-6xl w-full mx-auto space-y-12">
+
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                    EXPERIENCES
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    依時間由新到舊條列黑客松、論文、程式競賽、助教經歷與國科會計畫
+                </p>
+            </div>
+
+            <!-- 極簡分隔線列表 (無外框卡片) -->
+            <div class="divide-y divide-outline-variant/30 border-t border-b border-outline-variant/30">
+
+                <div id="exp-cathay-2025" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2025.03</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-on-surface-variant w-fit">黑客松</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">國泰金控 青年 AI 金融科技黑客松 (Multi-Agent 企業徵信系統)</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-secondary">佳作入選 (Honorable Mention)</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-paper-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.12</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-tertiary w-fit">學術論文</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">RGB-D 視覺導航與異質感測點雲空間融合架構研究論文發表</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-tertiary">研討會論文收錄發表</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-hackathon-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors scroll-mt-28">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.11</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-primary w-fit">黑客松</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">總統盃黑客松 / 全國 PUPC 開放資料與邊緣 AI 應用競賽</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-primary">全國銀獎 (Silver Award)</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-ncpc-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.10</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-secondary w-fit">程式競賽</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">教育部全國大專電腦軟體設計競賽 (NCPC)</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-secondary">連續入圍決賽晉級 (Finalist)</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-mmwave-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors scroll-mt-28">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.08</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-primary w-fit">智慧感測賽</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">全國毫米波雷達智慧感測創意競賽 (GuideSense 穿戴導引)</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-primary">全國第二名 / 亞軍 (2nd Place)</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-nstc-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.06</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-secondary w-fit">國科會</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">國家科學及技術委員會 (NSTC) 大專學生研究計畫</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-secondary">正式核定通過並獲研究補助</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-nantou-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors scroll-mt-28">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.05</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-primary w-fit">黑客松</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">南投數位山城地方創生與 AIoT 應用黑客松</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-primary">最佳技術創新獎</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-cpe-2024" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2024.03</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-tertiary w-fit">程式競賽</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">ACM-ICPC 台灣委員會 CPE 大學程式能力檢定</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-tertiary">全國排名前 2% (Top 2% 頂標)</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="exp-ta-2023" class="py-5 px-3 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <span class="font-code-block text-code-block text-primary font-semibold w-28 shrink-0">2023.09 - 至今</span>
+                        <span class="font-label-caption text-label-caption px-2.5 py-0.5 bg-surface-container-high text-on-surface-variant w-fit">助教經歷</span>
+                        <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">逢甲大學資工系「C/C++ 程式設計」與「公共經濟學量化分析」雙門教學助教</h3>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
+                        <span class="font-headline-sm text-body-md font-bold text-on-surface">指導 120+ 名學生 / 自動評測開發</span>
+                        <a href="#master-certificates" class="inline-flex items-center gap-1 font-code-inline text-code-inline text-primary hover:underline">
+                            <span>證明連結</span>
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 總證明彙整區塊 -->
+            <div id="master-certificates" class="pt-6 scroll-mt-24">
+                <div class="p-6 sm:p-8 bg-surface-container-low border border-primary/40 shadow-xl space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant/30 pb-5">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">folder_special</span>
+                            </div>
+                            <div>
+                                <span class="font-code-inline text-label-caption text-primary uppercase tracking-wider">MASTER VERIFICATION ARCHIVE</span>
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface">總證明文件彙整 (All-in-One Credentials Portfolio)</h3>
+                            </div>
+                        </div>
+                        <a href="#contact" class="inline-flex items-center gap-2 px-5 py-3 bg-primary text-on-primary-fixed font-label-badge text-label-badge font-bold hover:opacity-90 transition-all shrink-0">
+                            <span class="material-symbols-outlined text-[18px]">download</span>
+                            <span>一鍵下載全套證明 PDF (8.4 MB)</span>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 font-code-inline text-code-inline">
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">01_總統盃與PUPC全國銀獎證書.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">02_國科會大專生研究計畫核定函.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">03_全國毫米波雷達競賽亞軍獎狀.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">04_NCPC全國大專軟體競賽決賽證明.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">05_CPE全國前2%頂標成績單與論文.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between p-3.5 bg-surface-container hover:bg-surface-container-high transition-colors group">
+                            <div class="flex items-center gap-2.5 truncate pr-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+                                <span class="truncate text-on-surface group-hover:text-primary">06_逢甲資工GPA成績單與助教聘書.pdf</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline text-[16px]">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== 5. 聯繫方式區段 (#contact：至少獨立一個視窗大小) ==================== -->
+    <section id="contact" class="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center relative overflow-hidden bg-surface py-24 px-6 border-t border-outline-variant/30 scroll-mt-20">
+        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-primary/15 via-secondary-container/10 to-transparent blur-3xl pointer-events-none"></div>
+        <div class="max-w-7xl w-full mx-auto relative z-10 space-y-12">
+
+            <div class="flex flex-col items-start max-w-4xl space-y-3">
+                <h2 class="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed to-secondary">
+                    聯繫方式 CONTACT
+                </h2>
+                <p class="font-body-lg text-body-md sm:text-body-lg text-on-surface-variant max-w-3xl">
+                    正在積極尋找 AI 軟體工程師、電腦視覺演算法或後端系統架構實習與全職機會。歡迎技術交流、架構探討或職缺邀約！
+                </p>
+                <div class="pt-2 flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container font-code-inline text-code-inline text-on-surface border border-outline-variant/30">
+                        <span class="w-2 h-2 bg-primary-container animate-ping"></span>
+                        <span>Available Immediately</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container font-code-inline text-code-inline text-on-surface-variant border border-outline-variant/30">
+                        <span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
+                        <span id="live-taipei-clock">Asia/Taipei GMT+8: Calculating...</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container font-code-inline text-code-inline text-on-surface-variant border border-outline-variant/30">
+                        <span class="material-symbols-outlined text-tertiary text-[18px]">location_on</span>
+                        <span>Taichung • Taipei • Global Remote</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 三大聯繫與履歷卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex flex-col justify-between p-6 bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 transition-all shadow-md">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined text-[26px]">mail</span>
+                            </div>
+                            <span class="font-label-badge text-label-badge text-primary bg-surface-container-lowest px-2.5 py-1">
+                                &lt; 12h 回覆保證
+                            </span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2 font-bold">直接信件聯繫</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+                            歡迎提供職位規格書 (JD)、技術交流邀約，或探討分散式訓練與邊緣推論架構。
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between p-3 bg-surface-container-lowest">
+                                <div class="min-w-0 pr-2">
+                                    <p class="font-label-caption text-label-caption text-outline uppercase">Primary Work Email</p>
+                                    <p class="font-code-inline text-code-inline text-on-surface font-semibold truncate" id="email-address-target">dev.ai.engineer@example.com</p>
+                                </div>
+                                <button class="shrink-0 p-2 bg-surface-container-high text-primary hover:bg-primary hover:text-on-primary-fixed transition-all" id="copy-btn" onclick="copyEmailTarget()" title="複製郵件地址" type="button">
+                                    <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-surface-container-lowest">
+                                <div class="min-w-0 pr-2">
+                                    <p class="font-label-caption text-label-caption text-outline uppercase">Academic Email</p>
+                                    <p class="font-code-inline text-code-inline text-on-surface-variant font-medium truncate">fcu.csie.engineer@gmail.com</p>
+                                </div>
+                                <span class="material-symbols-outlined text-outline text-[18px]">school</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 bg-primary text-on-primary-fixed font-headline-sm text-body-md font-bold hover:opacity-90 transition-all" href="mailto:dev.ai.engineer@example.com?subject=Job%20Opportunity%20/%20Technical%20Inquiry">
+                        <span class="material-symbols-outlined text-[20px]">send</span>
+                        <span>開啟郵件客戶端寄信</span>
+                    </a>
+                </div>
+
+                <div class="flex flex-col justify-between p-6 bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 transition-all shadow-md">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center text-secondary">
+                                <span class="material-symbols-outlined text-[26px]">terminal</span>
+                            </div>
+                            <span class="font-label-badge text-label-badge text-secondary bg-surface-container-lowest px-2.5 py-1">
+                                Verified Codebase
+                            </span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2 font-bold">開源與專業社群</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+                            查驗公開開源專案、完整重現基準效能、論文實作與技術社群交流。
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <a class="flex items-center justify-between p-3 bg-surface-container-lowest hover:bg-surface-container-high transition-all" href="https://github.com" rel="noopener noreferrer" target="_blank">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">code</span>
+                                    <div>
+                                        <p class="font-headline-sm text-body-md text-on-surface font-semibold">GitHub Profile</p>
+                                        <p class="font-label-caption text-label-caption text-on-surface-variant">Pinned Benchmarks &amp; CUDA Tools</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-outline text-[18px]">north_east</span>
+                            </a>
+                            <a class="flex items-center justify-between p-3 bg-surface-container-lowest hover:bg-surface-container-high transition-all" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-secondary text-[20px]">share</span>
+                                    <div>
+                                        <p class="font-headline-sm text-body-md text-on-surface font-semibold">LinkedIn Network</p>
+                                        <p class="font-label-caption text-label-caption text-on-surface-variant">Engineering Posts &amp; Career Path</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-outline text-[18px]">north_east</span>
+                            </a>
+                        </div>
+                    </div>
+                    <a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 bg-surface-container-highest text-on-surface font-headline-sm text-body-md font-semibold hover:bg-surface-bright transition-all" href="https://github.com" rel="noopener noreferrer" target="_blank">
+                        <span class="material-symbols-outlined text-[20px]">terminal</span>
+                        <span>檢視最新開源 Commits</span>
+                    </a>
+                </div>
+
+                <div class="flex flex-col justify-between p-6 bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 transition-all shadow-md">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined text-[26px]">description</span>
+                            </div>
+                            <span class="font-label-badge text-label-badge text-primary bg-surface-container-lowest px-2.5 py-1">
+                                Updated CV
+                            </span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2 font-bold">完整履歷檔案下載</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+                            專為招募團隊與工程主管提供：結構清楚的經歷清單、系統專案架構圖解與學術成果。
+                        </p>
+                        <div class="p-3 mb-5 bg-surface-container-lowest flex items-center gap-3">
+                            <div class="w-10 h-12 bg-surface-container-high flex flex-col justify-center items-center text-primary shrink-0">
+                                <span class="font-label-caption text-label-caption font-bold">PDF</span>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-body-sm text-body-sm text-on-surface font-semibold truncate">CSIE_AI_Software_Resume.pdf</p>
+                                <p class="font-label-caption text-label-caption text-on-surface-variant">ATS-Optimized • 中/英文雙版本</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <a class="w-full inline-flex items-center justify-between px-4 py-3 bg-primary text-on-primary-fixed font-headline-sm text-body-md font-bold hover:opacity-90 transition-all" href="#contact">
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">download</span>下載中文精煉履歷</span>
+                            <span class="font-label-caption text-label-caption">2.4 MB</span>
+                        </a>
+                        <a class="w-full inline-flex items-center justify-between px-4 py-3 bg-surface-container-highest text-on-surface font-headline-sm text-body-md font-semibold hover:bg-surface-bright transition-all" href="#contact">
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">file_open</span>下載 Full English CV</span>
+                            <span class="font-label-caption text-label-caption text-on-surface-variant">3.1 MB</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快速留言表單 -->
+            <div class="p-8 bg-surface-container border border-outline-variant/30 shadow-lg">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-headline-md text-headline-md text-on-surface font-bold">快速留言與職缺洽詢</h3>
+                    <span class="material-symbols-outlined text-primary text-[28px]">contact_support</span>
+                </div>
+                <form class="space-y-4" id="contact-quick-form" onsubmit="handleFormSubmission(event)">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <input class="w-full px-4 py-3 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md border border-outline-variant/30 focus:outline-none focus:border-primary" id="sender-name" placeholder="您的姓名 / 稱謂 *" required="" type="text"/>
+                        <input class="w-full px-4 py-3 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md border border-outline-variant/30 focus:outline-none focus:border-primary" id="sender-email" placeholder="工作電子信箱 *" required="" type="email"/>
+                        <input class="w-full px-4 py-3 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md border border-outline-variant/30 focus:outline-none focus:border-primary" id="sender-org" placeholder="所屬機構 / 公司名稱" type="text"/>
+                    </div>
+                    <textarea class="w-full p-4 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md border border-outline-variant/30 focus:outline-none focus:border-primary resize-y" id="sender-message" placeholder="請簡述您的團隊、專案需求或預計安排的面試流程..." required="" rows="4"></textarea>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                        <span class="font-code-inline text-code-inline text-outline flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px] text-primary">lock</span>
+                            <span>End-to-End TLS Encrypted Transmission</span>
+                        </span>
+                        <button class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary-fixed font-headline-sm text-body-md font-bold hover:opacity-90 transition-all" id="submit-form-btn" type="submit">
+                            <span class="material-symbols-outlined text-[20px]" id="submit-icon">rocket_launch</span>
+                            <span id="submit-label">傳送訊息 (Send Message)</span>
+                        </button>
+                    </div>
+                    <div class="hidden p-3 bg-surface-container-high text-primary font-code-inline text-code-inline flex items-center gap-2" id="status-toast">
+                        <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        <span>訊息已送出！我將在 12 小時內回覆您。</span>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== 專案架構拓撲彈窗 (Modals) ==================== -->
+    <div class="fixed inset-0 z-50 hidden bg-surface/90 backdrop-blur-xl p-4 lg:p-8 flex items-center justify-center overflow-y-auto" id="modal-traffic">
+        <div class="w-full max-w-4xl p-6 lg:p-8 bg-surface-container-low shadow-2xl relative border border-outline-variant/40">
+            <button class="absolute top-6 right-6 p-2 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" onclick="toggleModal('modal-traffic')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="space-y-2 mb-6">
+                <span class="font-code-inline text-label-caption text-primary uppercase">SYSTEM ARCHITECTURE</span>
+                <h4 class="font-headline-md text-headline-md font-bold text-on-surface">智慧交通違規科技執法：資料流與拓撲架構</h4>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-surface-container-lowest font-code-inline text-code-inline mb-6">
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">1. 擷取與預處理</div>
+                    <p class="text-label-caption text-on-surface-variant">RTSP 串流經 GStreamer 硬解，CUDA 色彩轉換與尺度調整。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">2. INT8 模型推論</div>
+                    <p class="text-label-caption text-on-surface-variant">TensorRT 加速 YOLOv8，INT8 PTQ 量化引擎極限加速檢測。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">3. 多目標關聯</div>
+                    <p class="text-label-caption text-on-surface-variant">ByteTrack 處理暫態遮擋，Redis Stream 非同步佇列派發事件。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">4. 違規裁決核心</div>
+                    <p class="text-label-caption text-on-surface-variant">多邊形區域交集 (IoU) 擷取關鍵違規影格，自動寫入 Firestore。</p>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button class="px-5 py-2 bg-surface-container text-on-surface font-label-badge text-label-badge hover:bg-surface-container-high" onclick="toggleModal('modal-traffic')">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 z-50 hidden bg-surface/90 backdrop-blur-xl p-4 lg:p-8 flex items-center justify-center overflow-y-auto" id="modal-guidesense">
+        <div class="w-full max-w-4xl p-6 lg:p-8 bg-surface-container-low shadow-2xl relative border border-outline-variant/40">
+            <button class="absolute top-6 right-6 p-2 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" onclick="toggleModal('modal-guidesense')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="space-y-2 mb-6">
+                <span class="font-code-inline text-label-caption text-secondary uppercase">MULTIMODAL PIPELINE</span>
+                <h4 class="font-headline-md text-headline-md font-bold text-on-surface">GuideSense：毫米波雷達與 VLM 深度融合管線</h4>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-surface-container-lowest font-code-inline text-code-inline mb-6">
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-secondary font-bold">1. 異質感知輸入</div>
+                    <p class="text-label-caption text-on-surface-variant">IWR6843 點雲獲取都卜勒速度與深度，同步觸發廣角鏡頭擷取。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-secondary font-bold">2. 空間交叉注意力</div>
+                    <p class="text-label-caption text-on-surface-variant">3D CNN 提取點雲幾何特徵，與影像 Patch 做 Cross-Attention。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-secondary font-bold">3. 語音流式輸出</div>
+                    <p class="text-label-caption text-on-surface-variant">輕量化 VLM 解碼空間語意，WebSocket 低延遲串流語音反饋。</p>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button class="px-5 py-2 bg-surface-container text-on-surface font-label-badge text-label-badge hover:bg-surface-container-high" onclick="toggleModal('modal-guidesense')">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 z-50 hidden bg-surface/90 backdrop-blur-xl p-4 lg:p-8 flex items-center justify-center overflow-y-auto" id="modal-artecho">
+        <div class="w-full max-w-4xl p-6 lg:p-8 bg-surface-container-low shadow-2xl relative border border-outline-variant/40">
+            <button class="absolute top-6 right-6 p-2 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" onclick="toggleModal('modal-artecho')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="space-y-2 mb-6">
+                <span class="font-code-inline text-label-caption text-primary uppercase">MULTIMODAL RAG ARCHITECTURE</span>
+                <h4 class="font-headline-md text-headline-md font-bold text-on-surface">ArtEcho：十萬級藝術文物檢索增強與 Self-RAG</h4>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-surface-container-lowest font-code-inline text-code-inline mb-6">
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">1. 雙編碼超圖檢索</div>
+                    <p class="text-label-caption text-on-surface-variant">CLIP ViT-L/14 同構嵌入畫作圖像與歷史文獻，HNSW 鄰近搜索。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">2. Self-RAG 反思過濾</div>
+                    <p class="text-label-caption text-on-surface-variant">內建 Critic 評估器評定文獻相關性，過濾無效檢索並重寫提示。</p>
+                </div>
+                <div class="p-4 bg-surface-container space-y-2">
+                    <div class="text-primary font-bold">3. 溯源引用生成</div>
+                    <p class="text-label-caption text-on-surface-variant">動態輸出具館藏編號與史實引用的多輪策展對話回應。</p>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button class="px-5 py-2 bg-surface-container text-on-surface font-label-badge text-label-badge hover:bg-surface-container-high" onclick="toggleModal('modal-artecho')">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex flex-col items-center md:items-start gap-1">
+            <div class="font-code-block text-code-block text-on-surface font-semibold flex items-center gap-2">
+                <span class="text-primary">λ</span>
+                <span>Feng Chia University (逢甲大學資工系)</span>
+            </div>
+            <p class="font-label-caption text-label-caption text-on-surface-variant">© 2025 AI Systems &amp; Software Engineering. All rights reserved.</p>
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container border border-outline-variant/40 font-code-inline text-code-inline text-on-surface-variant">
+            <span class="w-2 h-2 bg-[#10b981] animate-ping"></span>
+            <span class="text-on-surface font-medium">Model Inference Server:</span>
+            <span class="text-primary">Online</span>
+            <span class="text-outline">|</span>
+            <span class="text-on-surface-variant">Latency: 18ms</span>
+        </div>
+        <div class="flex items-center gap-4 text-on-surface-variant font-body-sm text-body-sm">
+            <a class="hover:text-primary transition-colors" href="#home">首頁</a>
+            <a class="hover:text-primary transition-colors" href="#stamps">活動戳記</a>
+            <a class="hover:text-primary transition-colors" href="#projects">參與專案</a>
+            <a class="hover:text-primary transition-colors" href="#experiences">經歷</a>
+            <a class="hover:text-primary transition-colors" href="#contact">聯繫方式</a>
+        </div>
+    </div>
+</footer>
+
+<script src="index.js"></script>
+</body>
+</html>
