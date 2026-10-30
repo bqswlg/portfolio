@@ -1,38 +1,31 @@
-const FOOTER_LINKS = [
-  { id: 'home', label: '首頁' },
-  { id: 'stamps', label: '活動戳記' },
+import Roofline from './Roofline'
+
+const LINKS = [
+  { id: 'home', label: '個人簡介' },
+  { id: 'experiences', label: '競賽經歷' },
   { id: 'projects', label: '參與專案' },
-  { id: 'experiences', label: '經歷' },
+  { id: 'gallery', label: '活動戳記' },
   { id: 'contact', label: '聯繫方式' },
 ]
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-8">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col items-center md:items-start gap-1">
-          <div className="font-code-block text-code-block text-on-surface font-semibold flex items-center gap-2">
-            <span className="text-primary">λ</span>
-            <span>Feng Chia University (逢甲大學資工系)</span>
+    <footer className="bg-paper border-t border-line py-10 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <Roofline className="h-4 w-14 text-blue" />
+          <div className="text-center md:text-left">
+            <p className="font-display font-bold text-ink text-sm">郭敏彥 · 逢甲大學資工系</p>
+            <p className="text-xs text-ink-soft">© 2026 Kuo Min Yen. All rights reserved.</p>
           </div>
-          <p className="font-label-caption text-label-caption text-on-surface-variant">
-            © 2025 AI Systems &amp; Software Engineering. All rights reserved.
-          </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-container border border-outline-variant/40 font-code-inline text-code-inline text-on-surface-variant">
-          <span className="w-2 h-2 bg-[#10b981] animate-ping" />
-          <span className="text-on-surface font-medium">Model Inference Server:</span>
-          <span className="text-primary">Online</span>
-          <span className="text-outline">|</span>
-          <span className="text-on-surface-variant">Latency: 18ms</span>
-        </div>
-        <div className="flex items-center gap-4 text-on-surface-variant font-body-sm text-body-sm">
-          {FOOTER_LINKS.map((l) => (
-            <a key={l.id} className="hover:text-primary transition-colors" href={`#${l.id}`}>
+        <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-ink-soft">
+          {LINKS.map((l) => (
+            <a key={l.id} href={`#${l.id}`} className="hover:text-blue transition-colors">
               {l.label}
             </a>
           ))}
-        </div>
+        </nav>
       </div>
     </footer>
   )

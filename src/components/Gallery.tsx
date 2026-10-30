@@ -1,15 +1,17 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Stamp } from '../types'
 import { FALLBACK_STAMPS, normalizeStamps } from '../data/stamps'
+import SectionTitle from './SectionTitle'
 
-/** 缺少實際照片時的佔位圖（提示使用者將照片放入 public/stamps/） */
+/** 缺圖佔位（提示把照片放入 public/stamps/） */
 const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(
-  "<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='100%' height='100%' fill='#1c1f2a'/><text x='50%' y='50%' fill='#4cd7f6' font-family='monospace' font-size='16' text-anchor='middle' dominant-baseline='middle'>待補活動照片</text></svg>",
+  "<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='100%' height='100%' fill='#ececea'/><text x='50%' y='50%' fill='#9aa0ab' font-family='sans-serif' font-size='16' text-anchor='middle' dominant-baseline='middle'>待補活動照片</text></svg>",
 )}`
 
 const ROTATE_INTERVAL_MS = 2500
 
-export default function Stamps() {
+/** 活動戳記 = 自動切換輪播（左大圖 crossfade、右候選縮圖、2.5s 輪替、點縮圖插隊） */
+export default function Gallery() {
   const [queue, setQueue] = useState<Stamp[]>([])
   const [resetNonce, setResetNonce] = useState(0)
 
@@ -17,12 +19,8 @@ export default function Stamps() {
   const [layers, setLayers] = useState<{ a: string; b: string; active: 'a' | 'b' }>({ a: '', b: '', active: 'a' })
   const firstFeaturedRef = useRef(true)
 
-  // 文字淡入（延遲替換製造 dip 效果）
-  const [displayText, setDisplayText] = useState<{ tag: string; title: string; desc: string }>({
-    tag: 'STAMPS GALLERY',
-    title: '活動紀錄照片',
-    desc: '隨機捕捉活動瞬間，展現豐富的專案實作與技術交流足跡。',
-  })
+  // 文字延遲淡入
+  const [displayText, setDisplayText] = useState({ tag: 'ACTIVITY STAMP', title: '活動紀錄', desc: '活動參與紀錄與技術交流足跡' })
   const [textDim, setTextDim] = useState(false)
   const firstTextRef = useRef(true)
 
@@ -33,7 +31,7 @@ export default function Stamps() {
 
   const featured = queue[0]
 
-  // ---------- 載入戳記（manifest 優先，失敗回退 FALLBACK） ----------
+  // ---------- 載入（manifest 優先，失敗回退 FALLBACK） ----------
   useEffect(() => {
     let cancelled = false
     async function load() {
@@ -88,7 +86,7 @@ export default function Stamps() {
     return () => clearTimeout(t)
   }, [featured?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ---------- 自動輪播 + 進度條（CSS 動畫，避免每 40ms 重繪） ----------
+  // ---------- 自動輪播 + 進度條 ----------
   useEffect(() => {
     if (queue.length <= 1) return
     function startBar() {
@@ -96,7 +94,7 @@ export default function Stamps() {
       if (!bar) return
       bar.style.transition = 'none'
       bar.style.width = '0%'
-      void bar.offsetHeight // 強制 reflow
+      void bar.offsetHeight
       bar.style.transition = `width ${ROTATE_INTERVAL_MS}ms linear`
       bar.style.width = '100%'
     }
@@ -142,7 +140,7 @@ export default function Stamps() {
   const row1 = queue.slice(0, split)
   const row2 = queue.slice(split)
 
-  function renderThumb(stamp: Stamp, isFirst: boolean) {
+  function renderThumb(stamp: Stamp) {
     return (
       <button
         key={stamp.id}
@@ -153,10 +151,7 @@ export default function Stamps() {
         }}
         onClick={() => handleThumbClick(stamp.id)}
         className={
-          'stamp-thumb relative h-full overflow-hidden shrink-0 border transition-opacity duration-300 ' +
-          (isFirst
-            ? 'border-primary ring-2 ring-primary opacity-100'
-            : 'border-outline-variant/40 opacity-70 hover:opacity-100')
+          'stamp-thumb relative h-full overflow-hidden shrink-0 transition-opacity duration-300 '
         }
       >
         <img
@@ -173,32 +168,21 @@ export default function Stamps() {
 
   return (
     <section
-      id="stamps"
-      className="w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-surface-container-lowest py-20 px-6 border-t border-outline-variant/30 scroll-mt-20"
+      id="gallery"
+      className="scroll-mt-24 bg-mist min-h-[calc(100vh-5rem)] flex flex-col justify-center py-20 px-6 border-b border-line"
     >
-      <div className="max-w-7xl w-full mx-auto space-y-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <h2 className="font-display-hero text-headline-lg sm:text-display-hero-mobile font-extrabold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-primary via-primary-fixed to-secondary">
-            STAMPS
-          </h2>
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-2 px-3 py-1 bg-surface-container font-code-inline text-label-caption text-primary border border-outline-variant/30">
-              <span className="w-2 h-2 bg-primary animate-ping" />
-              <span>AUTO-ROTATING GALLERY</span>
-            </span>
-            <p className="font-body-sm text-body-sm text-on-surface-variant hidden md:inline">
-              動態讀取 <code className="text-primary font-code-inline">stamps/</code> 資料夾照片，自動絲滑替補輪播
-            </p>
-          </div>
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <SectionTitle zh="活動戳記" en="Activity Stamps" />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:h-[520px]">
-          {/* 左側：主展示照片 + 敘述 */}
-          <div className="w-full lg:w-[440px] xl:w-[480px] shrink-0 flex flex-col bg-surface-container-low overflow-hidden border border-outline-variant/40 shadow-xl">
-            <div className="relative w-full h-72 lg:h-auto lg:flex-1 overflow-hidden bg-surface-container-lowest">
+        <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:h-[440px]">
+          {/* 左：主展示（雙層 crossfade） */}
+          <div className="w-full lg:w-[420px] xl:w-[460px] shrink-0 flex flex-col bg-paper overflow-hidden border border-line shadow-sm">
+            <div className="relative w-full h-72 lg:h-auto lg:flex-1 overflow-hidden bg-mist-2">
               <img
                 src={layers.a || PLACEHOLDER}
-                alt="Featured Event Stamp"
+                alt="活動照片"
                 onError={(e) => {
                   if (e.currentTarget.src !== PLACEHOLDER) e.currentTarget.src = PLACEHOLDER
                 }}
@@ -209,7 +193,7 @@ export default function Stamps() {
               />
               <img
                 src={layers.b || PLACEHOLDER}
-                alt="Featured Event Stamp"
+                alt="活動照片"
                 onError={(e) => {
                   if (e.currentTarget.src !== PLACEHOLDER) e.currentTarget.src = PLACEHOLDER
                 }}
@@ -218,34 +202,27 @@ export default function Stamps() {
                   (layers.active === 'b' ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]')
                 }
               />
-
-              <div className="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-md font-code-inline text-label-caption text-primary border border-outline-variant/30">
+              <div className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-blue text-white font-mono text-[11px] tracking-wider">
                 {displayText.tag}
-              </div>
-              {/* 底部進度條 */}
-              <div className="absolute bottom-0 left-0 right-0 z-10 h-1 bg-surface-container-highest overflow-hidden">
-                <div ref={progressBarRef} className="h-full bg-primary" style={{ width: '0%' }} />
               </div>
             </div>
             <div
-              className="stamp-text-fade p-5 bg-surface-container-low border-t border-outline-variant/30"
+              className="stamp-text-fade p-5 bg-paper border-t border-line"
               style={{ opacity: textDim ? 0.35 : 1, transform: textDim ? 'translateY(3px)' : 'translateY(0)' }}
             >
-              <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface truncate">{displayText.title}</h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2">
-                {displayText.desc}
-              </p>
+              <h3 className="font-display text-lg font-bold text-ink truncate">{displayText.title}</h3>
+              <p className="mt-1.5 text-sm text-ink-soft leading-relaxed line-clamp-2">{displayText.desc}</p>
             </div>
           </div>
 
-          {/* 右側：上下兩排候選隊伍 */}
+          {/* 右：候選縮圖雙排 */}
           <div className="flex-1 overflow-x-auto overflow-y-hidden pb-2 lg:pb-0">
-            <div className="flex flex-col gap-4 h-[360px] lg:h-full justify-between">
+            <div className="flex flex-col gap-4 h-[320px] lg:h-full justify-between">
               <div className="flex items-stretch gap-4 h-[calc(50%-0.5rem)]">
-                {row1.map((stamp) => renderThumb(stamp, stamp.id === featured?.id))}
+                {row1.map((stamp) => renderThumb(stamp))}
               </div>
               <div className="flex items-stretch gap-4 h-[calc(50%-0.5rem)]">
-                {row2.map((stamp) => renderThumb(stamp, stamp.id === featured?.id))}
+                {row2.map((stamp) => renderThumb(stamp))}
               </div>
             </div>
           </div>
