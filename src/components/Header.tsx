@@ -1,6 +1,5 @@
 import type { NavItem } from '../types'
 import { useScrollSpy } from '../hooks/useScrollSpy'
-import Roofline from './Roofline'
 
 const NAV: NavItem[] = [
   { id: 'home', top: '個人', bottom: '簡介' },
@@ -18,8 +17,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-slate text-white shadow-md">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-        <a href="#home" className="flex items-center gap-3 shrink-0">
-          <Roofline className="h-6 w-16 sm:w-20 text-white/75" />
+        <a href="#home" className="flex items-center shrink-0">
           <div className="leading-tight">
             <div className="font-display font-extrabold text-lg sm:text-xl text-white">郭敏彥</div>
             <div className="font-mono text-[10px] tracking-[0.18em] text-white/45">KUO MIN YEN · PORTFOLIO</div>

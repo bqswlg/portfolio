@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { EXPERIENCES, CERTIFICATES } from '../data/experiences'
 import SectionTitle from './SectionTitle'
 import Icon from './Icon'
 
-/** 競賽經歷 = 經歷與競賽時間軸 + 證明文件下載（原「檔案下載」併入） */
+/** 競賽經歷 = 經歷與競賽時間軸 + 證明文件（點擊於新分頁開啟 PDF；最多 6 份，其餘摺疊） */
 export default function Experiences() {
+  const [showAllCerts, setShowAllCerts] = useState(false)
+
   return (
     <section id="experiences" className="scroll-mt-24 bg-paper py-20 sm:py-24 px-6 border-b border-line">
       <div className="max-w-5xl mx-auto">
@@ -27,42 +30,46 @@ export default function Experiences() {
           ))}
         </div>
 
-        {/* 證明文件下載（原檔案下載） */}
+        {/* 證明文件（點擊於新分頁開啟 PDF；最多顯示 6 份，其餘摺疊） */}
         <div className="reveal mt-16 pt-10 border-t border-line">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h3 className="font-display text-xl font-bold text-ink">證明文件下載</h3>
-              <p className="mt-1 font-mono text-xs tracking-widest uppercase text-ink-soft">Credentials</p>
-            </div>
-            <a
-              href="#experiences"
-              className="shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-blue text-white font-medium hover:bg-blue-dark transition-colors"
-            >
-              <Icon name="folder_zip" className="text-[20px]" />
-              <span>一鍵下載全套 (PDF · 8.4 MB)</span>
-            </a>
+          <div className="mb-6">
+            <h3 className="font-display text-xl font-bold text-ink">證明文件</h3>
+            <p className="mt-1 font-mono text-xs tracking-widest uppercase text-ink-soft">Credentials</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {CERTIFICATES.map((name) => (
+            {(showAllCerts ? CERTIFICATES : CERTIFICATES.slice(0, 6)).map((cert) => (
               <a
-                key={name}
-                href="#experiences"
+                key={cert.name}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex items-center justify-between gap-3 p-4 bg-paper border border-line hover:border-blue/50 hover:bg-blue-soft transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="shrink-0 w-9 h-11 bg-mist border border-line flex items-center justify-center text-blue">
                     <Icon name="picture_as_pdf" className="text-[20px]" />
                   </span>
-                  <span className="truncate text-sm font-medium text-ink group-hover:text-blue">{name}</span>
+                  <span className="truncate text-sm font-medium text-ink group-hover:text-blue">{cert.name}</span>
                 </div>
                 <span className="shrink-0 inline-flex items-center gap-1 font-mono text-xs text-blue">
-                  <Icon name="download" className="text-[16px]" />
-                  下載
+                  <Icon name="open_in_new" className="text-[16px]" />
+                  瀏覽
                 </span>
               </a>
             ))}
           </div>
+
+          {CERTIFICATES.length > 6 && (
+            <button
+              type="button"
+              onClick={() => setShowAllCerts((v) => !v)}
+              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 border border-line text-sm font-medium text-ink-soft hover:border-blue hover:text-blue transition-colors"
+            >
+              <Icon name={showAllCerts ? 'expand_less' : 'expand_more'} className="text-[18px]" />
+              {showAllCerts ? '收合' : `顯示其餘 ${CERTIFICATES.length - 6} 份`}
+            </button>
+          )}
         </div>
       </div>
     </section>

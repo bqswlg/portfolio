@@ -32,10 +32,6 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           {/* 聯絡資訊 */}
           <div className="reveal space-y-5">
-            <p className="text-white/70 max-w-lg leading-relaxed">
-              正在積極尋找 AI 軟體工程師、電腦視覺演算法或後端系統架構的實習與全職機會。歡迎技術交流、架構探討或職缺邀約。
-            </p>
-
             <div className="flex items-center justify-between gap-3 p-4 bg-white/5 border border-white/10">
               <div className="min-w-0">
                 <p className="font-mono text-[11px] uppercase tracking-wider text-white/40">Email</p>
@@ -81,7 +77,6 @@ export default function Contact() {
               <Icon name="download" className="text-[22px]" />
               <span>下載履歷 (PDF)</span>
             </a>
-            <p className="text-center font-mono text-xs text-white/40">&lt; 12h 回覆保證 · Taichung · Taipei · Remote</p>
           </div>
         </div>
       </div>
