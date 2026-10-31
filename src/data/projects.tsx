@@ -5,6 +5,11 @@ const SAMPLE_IMG = `data:image/svg+xml,${encodeURIComponent(
   "<svg xmlns='http://www.w3.org/2000/svg' width='640' height='400'><rect width='100%' height='100%' fill='#ececea'/><text x='50%' y='50%' fill='#9aa0ab' font-family='sans-serif' font-size='22' text-anchor='middle' dominant-baseline='middle'>範例專案 · 待補圖片</text></svg>",
 )}`
 
+/** 架構圖待補的灰底佔位圖（請置換為實際架構圖） */
+const PENDING_IMG = `data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='640' height='400'><rect width='100%' height='100%' fill='#ececea'/><text x='50%' y='50%' fill='#9aa0ab' font-family='sans-serif' font-size='22' text-anchor='middle' dominant-baseline='middle'>架構圖 · 待補</text></svg>",
+)}`
+
 /**
  * 參與專案（展開後含動機／貢獻／成果／GitHub）
  * 前 3 筆為真實專案，後 3 筆為範例卡，請於此檔替換為真實內容。
@@ -78,19 +83,26 @@ export const PROJECTS: Project[] = [
   },
   // ── 以下為範例卡，請替換為真實專案 ──
   {
-    id: 'project-sample-1',
-    name: '範例專案一',
-    subtitle: 'Sample Project — replace in src/data/projects.tsx',
-    intro: '這是範例專案卡。請於 src/data/projects.tsx 替換為真實的專案名稱、簡介、技術標籤與時間。',
-    tags: ['Tag A', 'Tag B', 'Tag C'],
-    date: '2024.03',
-    image: SAMPLE_IMG,
-    sample: true,
-    motivation: '（範例）此處說明專案動機與要解決的痛點，請替換為真實內容。',
-    contributions: ['（範例）你在此專案的核心貢獻一。', '（範例）你在此專案的核心貢獻二。'],
+    id: 'project-traffic-triage',
+    name: '基於 AI 多模態技術之交通違規樣態自動辨識與智慧化案件分級系統',
+    subtitle: 'Multimodal Traffic Violation Recognition & Case Triage',
+    intro:
+      '整合 YOLO 物件偵測與 VLM 情境判讀，分析交通違規行為及其發生情境，輔助辨識特殊交通情境，並提供案件分級與審查參考。',
+    tags: ['Python', 'YOLO', 'BoT-SORT', 'VLM', 'LLM', 'RAG', 'Kafka', 'JavaScript', 'Firebase'],
+    date: '2025.09 - 現在',
+    image: PENDING_IMG,
+    motivation:
+      '現行科技執法系統主要依據影像辨識結果判定違規，對於施工改道、禮讓救護車等特殊交通情境，較缺乏進一步的情境判讀機制。此外，影像辨識誤判可能增加無效違規案件，使審查人員仍需投入大量時間進行人工確認。',
+    contributions: [
+      '負責影像資料標記與清洗，建立模型訓練所需資料集。',
+      '進行 YOLO 模型訓練與參數微調，驗證集各物件類別 mAP@50 平均約 0.9。',
+      '使用 Python 開發違規判定邏輯與案件資料封裝流程。',
+      '透過 Kafka 串接 YOLO、VLM 與 LLM 模組，建立跨模型資料傳遞流程。',
+      '規劃並實作前端審查介面與案件管理功能。',
+    ],
     outcomes: [
-      { value: '範例成果', caption: '量化指標或獎項' },
-      { value: '範例獎項', caption: '補充說明' },
+      { value: '台南市交通警察大隊', caption: '系統實測並獲得肯定' },
+      { value: '國科會大專生研究計畫', caption: '通過核定（115-2813-C-035-123-E）' },
     ],
     github: 'https://github.com',
   },
