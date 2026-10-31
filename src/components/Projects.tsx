@@ -7,8 +7,8 @@ import Icon from './Icon'
 /**
  * 參與專案
  * 狀態 A（預設）：三欄式卡片格。
- * 狀態 B（點擊卡片）：左右兩區塊 — 左側為被點卡片 + 其餘卡片收合標題鈕（被選卡片置中對齊右卡中線、
- *                   上下各保留按鈕、僅在仍有內容的一側淡出、可捲動），右側為詳細內容（技術標籤移至此）。
+ * 狀態 B（點擊卡片）：左右兩區塊 — 左側為被點卡片（加陰影上浮）＋ 其餘卡片收合標題鈕（上方僅一顆、整顆
+ *                   往頂端淡出；下方第一顆清晰、第二顆往邊緣淡出；可捲動），右側為詳細內容（技術標籤移至此）。
  */
 export default function Projects() {
   const [selected, setSelected] = useState<string | null>(null)
@@ -24,6 +24,7 @@ export default function Projects() {
     if (!el0) return
     const c: HTMLDivElement = el0
     c.style.scrollBehavior = 'auto'
+    c.style.overflowAnchor = 'none' // 關閉捲動錨定，避免置中後字體／版面微調把捲動位置頂掉
 
     const isDesktop = () => window.innerWidth >= 1024
 
@@ -33,10 +34,19 @@ export default function Projects() {
         c.style.webkitMaskImage = ''
         return
       }
+      const vH = c.clientHeight
       const atTop = c.scrollTop <= 1
-      const atBottom = c.scrollTop + c.clientHeight >= c.scrollHeight - 1
-      const topPart = atTop ? '#000 0%' : 'transparent 0%, #000 14%'
-      const botPart = atBottom ? '#000 100%' : '#000 86%, transparent 100%'
+      const atBottom = c.scrollTop + vH >= c.scrollHeight - 1
+      const cRect = c.getBoundingClientRect()
+      const card = selectedRef.current
+      const aboveEl = card?.previousElementSibling ?? null
+      const belowEl = card?.nextElementSibling ?? null
+      // 上方：整顆（唯一一顆）按鈕淡出 —— 從視窗頂端淡入到卡片上緣
+      const cardTopY = card ? Math.max(0, Math.round(card.getBoundingClientRect().top - cRect.top)) : 0
+      // 下方：第一顆相鄰按鈕保持清晰，從第二顆開始往邊緣淡出
+      const bottomBand = belowEl ? Math.max(0, cRect.bottom - belowEl.getBoundingClientRect().bottom) : 0
+      const topPart = atTop || !aboveEl || cardTopY <= 0 ? '#000 0px' : `transparent 0px, #000 ${cardTopY}px`
+      const botPart = atBottom || bottomBand <= 0 ? '#000 100%' : `#000 ${vH - bottomBand}px, transparent ${vH}px`
       const grad = `linear-gradient(to bottom, ${topPart}, ${botPart})`
       c.style.maskImage = grad
       c.style.webkitMaskImage = grad
@@ -48,42 +58,61 @@ export default function Projects() {
       const el = selectedRef.current
       if (!el) return 0
       const max = Math.max(0, c.scrollHeight - c.clientHeight)
-      return Math.max(0, Math.min(max, el.offsetTop + el.offsetHeight / 2 - c.clientHeight / 2))
+      // 卡片上方只保留一顆（淡出）按鈕：把上方第一顆按鈕頂端貼近視窗頂端
+      const aboveEl = el.previousElementSibling as HTMLElement | null
+      const want = aboveEl ? aboveEl.offsetTop - 12 : 0
+      return Math.max(0, Math.min(max, want))
     }
 
     let raf = 0
-    let animating = false
+    let animating = true // 進場即視為動畫中，避免 ResizeObserver 初次回呼搶先 snap 打斷進場
+    let pendingSnap = false
 
-    function animateTo(to: number) {
+    function snap() {
+      c.scrollTop = targetTop()
+      updateFade()
+    }
+
+    function animateTo() {
       const start = c.scrollTop
-      const change = to - start
-      if (Math.abs(change) < 1) {
-        updateFade()
-        return
-      }
       const t0 = performance.now()
       animating = true
+      pendingSnap = false
       const step = (now: number) => {
         const t = Math.min(1, (now - t0) / 1000)
-        c.scrollTop = start + change * ease(t)
+        const to = targetTop() // 每幀重算目標：字體／版面於動畫期間才穩定也能收斂
+        c.scrollTop = start + (to - start) * ease(t)
         updateFade()
-        if (t < 1) raf = requestAnimationFrame(step)
-        else animating = false
+        if (t < 1) {
+          raf = requestAnimationFrame(step)
+        } else {
+          animating = false
+          snap() // 收尾對準正確置中位置
+          if (pendingSnap) {
+            // 動畫期間版面曾變動（面板高度/字體），等穩定後再對準一次
+            pendingSnap = false
+            requestAnimationFrame(snap)
+          }
+        }
       }
       raf = requestAnimationFrame(step)
     }
 
     function recenter(animate: boolean) {
       if (!isDesktop() || !selectedRef.current) {
+        animating = false
         updateFade()
         return
       }
-      if (animate) animateTo(targetTop())
-      else {
-        if (animating) return
-        c.scrollTop = targetTop()
-        updateFade()
+      // 分頁隱藏時 rAF 會暫停，動畫跑不動；直接對準以確保靜止位置正確
+      if (document.hidden) {
+        animating = false
+        snap()
+        return
       }
+      if (animate) animateTo()
+      else if (animating) pendingSnap = true // 動畫中先記下，結束後再對準，避免打斷
+      else snap()
     }
 
     // 進場/切換：等版面穩定後再做緩動置中
@@ -96,15 +125,8 @@ export default function Projects() {
     c.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
 
-    // 高度變動（內容/字體）時即時重新置中；略過初次回呼以免打斷進場動畫
-    let firstRO = true
-    const ro = new ResizeObserver(() => {
-      if (firstRO) {
-        firstRO = false
-        return
-      }
-      recenter(false)
-    })
+    // 高度變動（內容/字體/面板高度）時重新置中；動畫中則延後到結束再對準
+    const ro = new ResizeObserver(() => recenter(false))
     ro.observe(c)
     if (selectedRef.current) ro.observe(selectedRef.current)
     document.fonts?.ready.then(() => recenter(false)).catch(() => {})
@@ -134,15 +156,15 @@ export default function Projects() {
           // ── 狀態 B：左右分割 ──
           <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
             {/* 左側：前卡標題鈕 → 被點卡片 → 後卡標題鈕（置中、動態淡出、可捲動） */}
-            <div className="lg:col-span-1 lg:relative">
+            <div className="lg:col-span-1 lg:relative lg:min-h-[40rem]">
               <div
                 ref={leftScrollRef}
-                className="space-y-3 lg:absolute lg:inset-0 lg:overflow-y-auto lg:py-24 no-scrollbar"
+                className="space-y-3 lg:absolute lg:inset-0 lg:overflow-y-auto lg:py-24 lg:px-3 no-scrollbar"
               >
                 {PROJECTS.slice(0, selectedIndex).map((p) => (
                   <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
                 ))}
-                <div ref={selectedRef}>
+                <div ref={selectedRef} className="relative z-10 card-lift">
                   <Card p={sel} selected hideTags />
                 </div>
                 {PROJECTS.slice(selectedIndex + 1).map((p) => (
@@ -179,7 +201,7 @@ function Card({
       className={
         'group flex flex-col bg-paper transition-all duration-300 ' +
         (onClick ? 'cursor-pointer hover:border-blue/50 hover:shadow-lg hover:-translate-y-0.5 ' : '') +
-        (selected ? 'border-blue' : 'border-line')
+        (selected ? 'border-blue shadow-xl' : 'border-line')
       }
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-mist">

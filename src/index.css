@@ -119,3 +119,13 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* 參與專案左側：被選卡片上浮，相鄰第一顆按鈕塞到卡片下方（桌面；以 !important 覆蓋 space-y 的 margin） */
+@media (min-width: 1024px) {
+  .card-lift {
+    margin-top: -0.5rem !important;
+  }
+  .card-lift + * {
+    margin-top: -0.5rem !important;
+  }
+}
