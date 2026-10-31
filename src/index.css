@@ -91,3 +91,41 @@
 .stamp-thumb {
   will-change: transform, opacity;
 }
+
+/* 參與專案：選取/切換進場動畫 */
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.panel-in {
+  animation: panelIn 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in {
+    animation: none;
+  }
+}
+
+/* 左側簡介捲動欄：隱藏捲軸；桌面上下淡出邊緣 */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 參與專案左側：被選卡片上浮，相鄰第一顆按鈕塞到卡片下方（桌面；以 !important 覆蓋 space-y 的 margin） */
+@media (min-width: 1024px) {
+  .card-lift {
+    margin-top: -0.5rem !important;
+  }
+  .card-lift + * {
+    margin-top: -0.5rem !important;
+  }
+}
