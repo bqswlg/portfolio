@@ -91,3 +91,31 @@
 .stamp-thumb {
   will-change: transform, opacity;
 }
+
+/* 參與專案：選取/切換進場動畫 */
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.panel-in {
+  animation: panelIn 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in {
+    animation: none;
+  }
+}
+
+/* 左側簡介捲動欄：隱藏捲軸；桌面上下淡出邊緣 */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

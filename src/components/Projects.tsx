@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Project } from '../types'
 import { PROJECTS } from '../data/projects'
 import SectionTitle from './SectionTitle'
@@ -7,13 +7,116 @@ import Icon from './Icon'
 /**
  * 參與專案
  * 狀態 A（預設）：三欄式卡片格。
- * 狀態 B（點擊卡片）：左右兩區塊 — 左側為被點卡片 + 其餘卡片收合標題鈕（前者在上、後者在下），
- *                   右側為詳細內容（動機／貢獻／成果／GitHub），右上角「✕ 返回」回到三欄格。
+ * 狀態 B（點擊卡片）：左右兩區塊 — 左側為被點卡片 + 其餘卡片收合標題鈕（被選卡片置中對齊右卡中線、
+ *                   上下各保留按鈕、僅在仍有內容的一側淡出、可捲動），右側為詳細內容（技術標籤移至此）。
  */
 export default function Projects() {
   const [selected, setSelected] = useState<string | null>(null)
   const selectedIndex = selected ? PROJECTS.findIndex((p) => p.id === selected) : -1
   const sel = selectedIndex >= 0 ? PROJECTS[selectedIndex] : null
+
+  const leftScrollRef = useRef<HTMLDivElement>(null)
+  const selectedRef = useRef<HTMLDivElement>(null)
+
+  // 桌面：被選卡片置中對齊右卡中線（緩動捲動）；僅在該側仍有內容時淡出；高度變動時重新置中
+  useEffect(() => {
+    const el0 = leftScrollRef.current
+    if (!el0) return
+    const c: HTMLDivElement = el0
+    c.style.scrollBehavior = 'auto'
+
+    const isDesktop = () => window.innerWidth >= 1024
+
+    function updateFade() {
+      if (!isDesktop()) {
+        c.style.maskImage = ''
+        c.style.webkitMaskImage = ''
+        return
+      }
+      const atTop = c.scrollTop <= 1
+      const atBottom = c.scrollTop + c.clientHeight >= c.scrollHeight - 1
+      const topPart = atTop ? '#000 0%' : 'transparent 0%, #000 14%'
+      const botPart = atBottom ? '#000 100%' : '#000 86%, transparent 100%'
+      const grad = `linear-gradient(to bottom, ${topPart}, ${botPart})`
+      c.style.maskImage = grad
+      c.style.webkitMaskImage = grad
+    }
+
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+
+    function targetTop() {
+      const el = selectedRef.current
+      if (!el) return 0
+      const max = Math.max(0, c.scrollHeight - c.clientHeight)
+      return Math.max(0, Math.min(max, el.offsetTop + el.offsetHeight / 2 - c.clientHeight / 2))
+    }
+
+    let raf = 0
+    let animating = false
+
+    function animateTo(to: number) {
+      const start = c.scrollTop
+      const change = to - start
+      if (Math.abs(change) < 1) {
+        updateFade()
+        return
+      }
+      const t0 = performance.now()
+      animating = true
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / 1000)
+        c.scrollTop = start + change * ease(t)
+        updateFade()
+        if (t < 1) raf = requestAnimationFrame(step)
+        else animating = false
+      }
+      raf = requestAnimationFrame(step)
+    }
+
+    function recenter(animate: boolean) {
+      if (!isDesktop() || !selectedRef.current) {
+        updateFade()
+        return
+      }
+      if (animate) animateTo(targetTop())
+      else {
+        if (animating) return
+        c.scrollTop = targetTop()
+        updateFade()
+      }
+    }
+
+    // 進場/切換：等版面穩定後再做緩動置中
+    let r1 = requestAnimationFrame(() => {
+      r1 = requestAnimationFrame(() => recenter(true))
+    })
+
+    const onScroll = () => updateFade()
+    const onResize = () => recenter(false)
+    c.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+
+    // 高度變動（內容/字體）時即時重新置中；略過初次回呼以免打斷進場動畫
+    let firstRO = true
+    const ro = new ResizeObserver(() => {
+      if (firstRO) {
+        firstRO = false
+        return
+      }
+      recenter(false)
+    })
+    ro.observe(c)
+    if (selectedRef.current) ro.observe(selectedRef.current)
+    document.fonts?.ready.then(() => recenter(false)).catch(() => {})
+
+    return () => {
+      cancelAnimationFrame(r1)
+      cancelAnimationFrame(raf)
+      c.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      ro.disconnect()
+    }
+  }, [selected])
 
   return (
     <section id="projects" className="scroll-mt-24 bg-mist py-20 sm:py-24 px-6">
@@ -29,20 +132,27 @@ export default function Projects() {
           </div>
         ) : (
           // ── 狀態 B：左右分割 ──
-          <div className="grid lg:grid-cols-3 gap-6 items-start">
-            {/* 左側：前卡標題鈕 → 被點卡片 → 後卡標題鈕 */}
-            <div className="lg:col-span-1 space-y-3">
-              {PROJECTS.slice(0, selectedIndex).map((p) => (
-                <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
-              ))}
-              <Card p={sel} selected />
-              {PROJECTS.slice(selectedIndex + 1).map((p) => (
-                <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
-              ))}
+          <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
+            {/* 左側：前卡標題鈕 → 被點卡片 → 後卡標題鈕（置中、動態淡出、可捲動） */}
+            <div className="lg:col-span-1 lg:relative">
+              <div
+                ref={leftScrollRef}
+                className="space-y-3 lg:absolute lg:inset-0 lg:overflow-y-auto lg:py-24 no-scrollbar"
+              >
+                {PROJECTS.slice(0, selectedIndex).map((p) => (
+                  <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
+                ))}
+                <div ref={selectedRef}>
+                  <Card p={sel} selected hideTags />
+                </div>
+                {PROJECTS.slice(selectedIndex + 1).map((p) => (
+                  <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
+                ))}
+              </div>
             </div>
-            {/* 右側：詳細內容 */}
+            {/* 右側：詳細內容（含技術標籤；切換時淡入上滑） */}
             <div className="lg:col-span-2">
-              <DetailPanel p={sel} onClose={() => setSelected(null)} />
+              <DetailPanel key={sel.id} p={sel} onClose={() => setSelected(null)} />
             </div>
           </div>
         )}
@@ -51,8 +161,18 @@ export default function Projects() {
   )
 }
 
-/** 專案卡片（狀態 A 格子 / 狀態 B 左側被選卡片） */
-function Card({ p, selected, onClick }: { p: Project; selected?: boolean; onClick?: () => void }) {
+/** 專案卡片（狀態 A 格子 / 狀態 B 左側被選卡片；hideTags 時隱藏技術標籤） */
+function Card({
+  p,
+  selected,
+  onClick,
+  hideTags,
+}: {
+  p: Project
+  selected?: boolean
+  onClick?: () => void
+  hideTags?: boolean
+}) {
   return (
     <div
       onClick={onClick}
@@ -75,13 +195,15 @@ function Card({ p, selected, onClick }: { p: Project; selected?: boolean; onClic
         <h3 className="font-display text-lg font-bold text-ink leading-snug">{p.name}</h3>
         <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
         <p className="mt-3 text-sm text-ink-soft leading-relaxed flex-1">{p.intro}</p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {p.tags.map((t) => (
-            <span key={t} className="text-[11px] px-2 py-0.5 border border-line text-ink-soft">
-              {t}
-            </span>
-          ))}
-        </div>
+        {!hideTags && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {p.tags.map((t) => (
+              <span key={t} className="text-[11px] px-2 py-0.5 border border-line text-ink-soft">
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -105,20 +227,16 @@ function TitleButton({ p, onClick }: { p: Project; onClick: () => void }) {
   )
 }
 
-/** 右側詳細內容 */
+/** 右側詳細內容（含技術標籤；不重複名稱/時間；切換時淡入上滑） */
 function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
   return (
-    <div className="bg-paper">
-      <div className="flex items-start justify-between gap-4 p-6 lg:p-8 border-b border-line">
-        <div className="min-w-0">
-          <p className="font-mono text-xs text-blue">{p.date}</p>
-          <h3 className="mt-0.5 font-display text-xl font-bold text-ink leading-snug">{p.name}</h3>
-          <p className="mt-0.5 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
-        </div>
+    <div className="panel-in bg-paper">
+      {/* 僅保留返回鈕，不再重複專案名稱與時間 */}
+      <div className="flex justify-end p-3 border-b border-line">
         <button
           type="button"
           onClick={onClose}
-          className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-sm text-ink-soft hover:text-blue transition-colors"
+          className="inline-flex items-center gap-1 px-2 py-1 text-sm text-ink-soft hover:text-blue transition-colors"
           aria-label="返回三欄瀏覽"
         >
           <Icon name="close" className="text-[18px]" />
@@ -127,6 +245,15 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
       </div>
 
       <div className="p-6 lg:p-8 space-y-6">
+        {/* 技術標籤（由左卡移至此） */}
+        <div className="flex flex-wrap gap-1.5">
+          {p.tags.map((t) => (
+            <span key={t} className="text-[11px] px-2 py-0.5 bg-mist border border-line text-ink-soft">
+              {t}
+            </span>
+          ))}
+        </div>
+
         {/* 動機 */}
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -143,10 +270,10 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
             <h4 className="font-mono text-xs tracking-[0.18em] uppercase text-blue">貢獻 · Contributions</h4>
           </div>
           <ul className="space-y-1.5">
-            {p.contributions.map((c, i) => (
+            {p.contributions.map((contribution, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-ink-soft leading-relaxed">
                 <span className="text-blue font-bold">›</span>
-                <span>{c}</span>
+                <span>{contribution}</span>
               </li>
             ))}
           </ul>
