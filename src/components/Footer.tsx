@@ -1,6 +1,6 @@
 const LINKS = [
   { id: 'home', label: '個人簡介' },
-  { id: 'experiences', label: '競賽經歷' },
+  { id: 'experiences', label: '經歷累積' },
   { id: 'projects', label: '參與專案' },
   { id: 'gallery', label: '活動戳記' },
   { id: 'contact', label: '聯繫方式' },
@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center">
           <div className="text-center md:text-left">
-            <p className="font-display font-bold text-ink text-sm">郭敏彥 · 逢甲大學資工系</p>
+            <p className="font-display font-bold text-ink text-sm">郭旻晏 · 逢甲大學資工系</p>
             <p className="text-xs text-ink-soft">© 2026 Kuo Min Yen. All rights reserved.</p>
           </div>
         </div>

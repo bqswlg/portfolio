@@ -4,7 +4,7 @@ import { useScrollSpy } from '../hooks/useScrollSpy'
 const NAV: NavItem[] = [
   { id: 'home', top: '個人', bottom: '簡介' },
   { id: 'projects', top: '參與', bottom: '專案' },
-  { id: 'experiences', top: '競賽', bottom: '經歷' },  
+  { id: 'experiences', top: '經歷', bottom: '累積' },
   { id: 'gallery', top: '活動', bottom: '戳記' },
   { id: 'contact', top: '聯繫', bottom: '方式' },
 ]
@@ -19,7 +19,7 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
         <a href="#home" className="flex items-center shrink-0">
           <div className="leading-tight">
-            <div className="font-display font-extrabold text-lg sm:text-xl text-white">郭敏彥</div>
+            <div className="font-display font-extrabold text-lg sm:text-xl text-white">郭旻晏</div>
             <div className="font-mono text-[10px] tracking-[0.18em] text-white/45">KUO MIN YEN · PORTFOLIO</div>
           </div>
         </a>

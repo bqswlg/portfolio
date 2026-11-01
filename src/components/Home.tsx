@@ -6,8 +6,7 @@ const TAGS = [
   { en: 'Project', label: '專案參與', value: '12+', unit: '個', icon: 'code' },
 ]
 
-const PORTRAIT =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCo98IeVkVVflaoGaGH_u5YG4FYNRyO1RSpVEcPbqN1dqHWECCLOp92vLqDvC0lNFasI6t89J7WKrVouqP0s3qMIVD3xxw3Hc5x1_nGBWovTvz-QN_Xac-bY1qyvDu3hZOBuJSSOIy2mqlVznEPab4NYsy8cqyTd3FdloS0M_5kvGfpyD9qGR1pXNC2bvaKV_OwsLma48GtTVCwr-Ww81aN5fHBaIWC-Bp6gBFZ'
+const PORTRAIT = '/portrait.jpg'
 
 /** 個人簡介（首頁＋理念簡介合併，單一滿版畫面：左文字＋標籤、右照片） */
 export default function Home() {
@@ -21,7 +20,7 @@ export default function Home() {
         <div>
           <p className="font-mono text-xs tracking-[0.22em] uppercase text-blue mb-4">個人簡介 · Profile</p>
           <h1 className="font-display text-5xl sm:text-6xl xl:text-7xl font-extrabold text-ink tracking-tight leading-none">
-            郭敏彥
+            郭旻晏
           </h1>
           <p className="mt-5 font-display text-lg sm:text-xl font-semibold text-ink-soft">
             Amity Kuo
@@ -57,12 +56,12 @@ export default function Home() {
         <div className="flex justify-center lg:justify-end">
           <div className="relative w-full max-w-sm aspect-[4/5] bg-white p-2.5 border border-line shadow-xl">
             <img
-              alt="郭敏彥"
+              alt="郭旻晏"
               src={PORTRAIT}
               className="w-full h-full object-cover object-center grayscale-[0.15] contrast-[1.02]"
             />
             <div className="absolute -bottom-3 -left-3 bg-blue text-white px-3 py-1.5 font-mono text-xs shadow-lg">
-              FCU · CSIE
+              FCU · IECS
             </div>
           </div>
         </div>
