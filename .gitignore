@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Temporary photo staging folder (originals copied into public/)
+project/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
