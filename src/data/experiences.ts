@@ -23,13 +23,7 @@ export const EXPERIENCES: Experience[] = [
 
 /**
  * 證明文件 = 競賽參與的證明文件（點擊於新分頁開啟 PDF）
- * url 請替換為實際 PDF 連結，或將檔案放入 public/certificates/
+ * 待補：請填入實際資料，url 指向 PDF 連結或 public/certificates/ 內的檔案。
+ * 目前為空陣列，證明文件區塊會自動隱藏，有資料後即會顯示。
  */
-export const CERTIFICATES: { name: string; url: string }[] = [
-  { name: '總統盃與 PUPC 全國銀獎證書', url: '/certificates/01-president-cup-pupc.pdf' },
-  { name: '國科會大專生研究計畫核定函', url: '/certificates/02-nstc-grant.pdf' },
-  { name: '全國毫米波雷達競賽亞軍獎狀', url: '/certificates/03-mmwave-2nd.pdf' },
-  { name: 'NCPC 全國大專軟體競賽決賽證明', url: '/certificates/04-ncpc-finalist.pdf' },
-  { name: 'CPE 全國前 2% 頂標成績單與論文', url: '/certificates/05-cpe-top2.pdf' },
-  { name: '逢甲資工 GPA 成績單與助教聘書', url: '/certificates/06-fcu-gpa-ta.pdf' },
-]
+export const CERTIFICATES: { name: string; url: string }[] = []
