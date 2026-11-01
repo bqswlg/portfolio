@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "郭敏彥 AI 軟體工程師作品集 — React + TypeScript + Tailwind CSS v4",
+  "description": "郭旻晏 Amity Kuo 個人作品集 — React + TypeScript + Tailwind CSS v4",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
