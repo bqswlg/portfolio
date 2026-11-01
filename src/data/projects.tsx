@@ -1,13 +1,8 @@
 import type { Project } from '../types'
 
-/** 架構圖待補的灰底佔位圖（請置換為實際架構圖） */
-const PENDING_IMG = `data:image/svg+xml,${encodeURIComponent(
-  "<svg xmlns='http://www.w3.org/2000/svg' width='640' height='400'><rect width='100%' height='100%' fill='#ececea'/><text x='50%' y='50%' fill='#9aa0ab' font-family='sans-serif' font-size='22' text-anchor='middle' dominant-baseline='middle'>架構圖 · 待補</text></svg>",
-)}`
-
 /**
  * 參與專案（展開後含動機／貢獻／成果／GitHub）
- * 依時間新到舊排序；架構圖與 GitHub 連結為佔位，請替換為實際內容。
+ * 依時間新到舊排序；架構圖存於 public/projects/，GitHub 連結仍為佔位，請替換為實際內容。
  */
 export const PROJECTS: Project[] = [
   {
@@ -18,7 +13,7 @@ export const PROJECTS: Project[] = [
       '整合 YOLO 物件偵測與 VLM 情境判讀，分析交通違規行為及其發生情境，輔助辨識特殊交通情境，並提供案件分級與審查參考。',
     tags: ['Python', 'FastAPI', 'YOLO', 'BoT-SORT', 'VLM', 'LLM', 'RAG', 'Kafka', 'JavaScript', 'Firebase', 'JWT'],
     date: '2025.09 - 現在',
-    image: PENDING_IMG,
+    image: '/projects/traffic-triage.jpg',
     motivation:
       '現行科技執法系統主要依據影像辨識結果判定違規，對於施工改道、禮讓救護車等特殊交通情境，較缺乏進一步的情境判讀機制。此外，影像辨識誤判可能增加無效違規案件，使審查人員仍需投入大量時間進行人工確認。',
     contributions: [
@@ -42,7 +37,7 @@ export const PROJECTS: Project[] = [
       '結合 YOLO 影像辨識與毫米波雷達感測技術，提供視障者戶外行走時的交通號誌辨識及障礙物距離感知輔助。',
     tags: ['mmWave Radar', 'YOLOv8n', 'Python', '3D CNN', 'Raspberry Pi', 'Swift'],
     date: '2025.09 - 2026.09',
-    image: PENDING_IMG,
+    image: '/projects/guidesense.jpg',
     motivation:
       '傳統輔具及單一視覺或雷達感測系統，難以同時滿足視障者在戶外行走時對交通號誌辨識與障礙物距離感知的需求，因此透過不同感測技術的應用，改善單一感測方式在環境適應上的限制。',
     contributions: [
@@ -65,7 +60,7 @@ export const PROJECTS: Project[] = [
       '以藝術創作過程中的操作與影像資料為基礎，結合生成式 AI 提供互動式情緒引導，協助使用者整理創作歷程並進行自我覺察。',
     tags: ['Fabric.js', 'Vision API', 'OpenCV', 'FastAPI', 'RAG', 'LLM', 'PostgreSQL', 'S3 / MinIO'],
     date: '2026.03 - 2026.05',
-    image: PENDING_IMG,
+    image: '/projects/art-companion.jpg',
     motivation:
       '隨著青少年心理健康議題受到重視，傳統心理輔導資源面臨人力與服務可近性限制；另一方面，生成式 AI 的發展也使數位工具逐漸成為使用者尋求情緒支持的管道，因此希望透過藝術創作資料與 AI 技術，提供輔助性的自我探索方式。',
     contributions: [
@@ -87,7 +82,7 @@ export const PROJECTS: Project[] = [
       '整合收支管理、語音記帳與 AI 消費分析功能，運用機器學習與生成式 AI 分析使用者消費習慣，提供個人化理財建議及儲蓄規劃，協助使用者掌握財務狀況。',
     tags: ['Flutter', 'NLP', 'SQLite', 'FastAPI', 'Python', 'Gemini API', 'ML KMeans', 'Pydantic', 'Render'],
     date: '2025.01 - 2025.04',
-    image: PENDING_IMG,
+    image: '/projects/fintech.jpg',
     motivation:
       '傳統記帳軟體多以收支紀錄為主，較缺乏消費行為分析、個人化理財建議與長期儲蓄目標追蹤功能，因此希望結合機器學習與生成式 AI，提升記帳資料的應用價值。',
     contributions: [
@@ -105,7 +100,7 @@ export const PROJECTS: Project[] = [
       '結合生成式 AI 與遊戲化打卡機制開發旅遊 App，運用 RAG 技術整合南投地區景點資料，生成具動漫風格的旅遊文案，提升非熱門景點的曝光度，促進觀光人潮分流與在地旅遊發展。',
     tags: ['OpenAI API', 'RAG', '圖像辨識模型', 'Swift'],
     date: '2024.07 - 2024.10',
-    image: PENDING_IMG,
+    image: '/projects/nantou-travel.jpg',
     motivation:
       '觀光人潮集中於少數熱門景點，容易造成交通壅塞，而部分非熱門景點則因缺乏有效的行銷方式與曝光管道，較難吸引旅客，因此希望透過生成式 AI 與遊戲化機制，提高旅客探索不同景點的意願。',
     contributions: [
@@ -122,7 +117,7 @@ export const PROJECTS: Project[] = [
       '以家庭運動紀錄為應用情境，開發 Java Console App 框架，透過運動點數與家庭旅遊基金的轉換機制，結合物件導向設計、SOLID 原則及七種設計模式，提升程式架構的模組化程度與擴充性。',
     tags: ['Java 11', 'MVC 架構', 'SOLID 原則', 'OOP', 'Design Patterns', 'Console App 開發'],
     date: '2024.07 - 2024.10',
-    image: PENDING_IMG,
+    image: '/projects/familyactive.png',
     motivation:
       '希望透過遊戲化的運動紀錄與家庭獎勵機制，提高使用者持續運動的意願，並藉由此專案練習物件導向設計、設計模式及軟體架構規劃。',
     contributions: ['個人練習專案，負責整體程式架構設計與功能實作。'],
