@@ -1,62 +1,17 @@
 [
-  {
-    "src": "DSC00342-1.jpg",
-    "tag": "COMPETITION",
-    "title": "共善創新競賽",
-    "desc": "佳作得獎合照"
-  },
-  {
-    "src": "IMG_0208.JPG",
-    "tag": "COMPETITION",
-    "title": "2026 PUPC",
-    "desc": "銅獎得獎合照"
-  },
-  {
-    "src": "LINE_ALBUM_0426_250426_20.jpg",
-    "tag": "HACKATHON",
-    "title": "Hack to the top AI金融創新黑客松",
-    "desc": "活動過程"
-  },
-  {
-    "src": "LINE_ALBUM_2025426_261019_1.jpg",
-    "tag": "HACKATHON",
-    "title": "Hack to the top AI金融創新黑客松",
-    "desc": "活動合影"
-  },
-  {
-    "src": "messageImage_1793283912577_0.jpg",
-    "tag": "COMPETITION",
-    "title": "2024 NCPC",
-    "desc": "活動合影"
-  },
-  {
-    "src": "messageImage_1793283923414_0.jpg",
-    "tag": "HACKATHON",
-    "title": "2024 南投縣數位山城黑客松",
-    "desc": "第三名得獎合照"
-  },
-  {
-    "src": "messageImage_1793283935190_0.jpg",
-    "tag": "COMPETITION",
-    "title": "2024 資訊月",
-    "desc": "銅獎得獎合照"
-  },
-  {
-    "src": "messageImage_1793283957130_0.jpg",
-    "tag": "HACKATHON",
-    "title": "Hack to the top AI金融創新黑客松",
-    "desc": "活動過程"
-  },
-  {
-    "src": "S__22405151.jpg",
-    "tag": "COMPETITION",
-    "title": "2026 毫米波雷達AI創意競賽",
-    "desc": "第二名得獎合照"
-  },
-  {
-    "src": "S__22405152.jpg",
-    "tag": "COMPETITION",
-    "title": "2026 毫米波雷達AI創意競賽",
-    "desc": "專案發表"
-  }
+  { "src": "mmWave.jpg", "tag": "COMPETITION", "title": "2026 毫米波雷達 AI 創意競賽", "desc": "全國第二名得獎合照" },
+  { "src": "2026PUPC.JPG", "tag": "COMPETITION", "title": "2026 PUPC", "desc": "全國銀獎得獎合照" },
+  { "src": "ArtEcho.jpg", "tag": "COMPETITION", "title": "逢甲共善創新競賽", "desc": "心科技・創未來 佳作" },
+  { "src": "nantou.jpg", "tag": "HACKATHON", "title": "2024 南投縣數位山城黑客松", "desc": "全國第三名得獎合照" },
+  { "src": "it-month.jpg", "tag": "COMPETITION", "title": "2024 資訊月", "desc": "C/C++ 團體組第二名" },
+  { "src": "HackToTheTop.jpg", "tag": "HACKATHON", "title": "Hack to the Top AI 金融創新黑客松", "desc": "決賽入圍" },
+  { "src": "2024NCPC.jpg", "tag": "COMPETITION", "title": "2024 NCPC", "desc": "全國大專程式設計競賽決賽" },
+  { "src": "AITEC.jpg", "tag": "PROJECT", "title": "交通違規辨識分級系統", "desc": "AITEC 專案展示" },
+  { "src": "mmWave2.jpg", "tag": "COMPETITION", "title": "2026 毫米波雷達 AI 創意競賽", "desc": "專案發表" },
+  { "src": "HackToTheTop2.jpg", "tag": "HACKATHON", "title": "Hack to the Top AI 金融創新黑客松", "desc": "活動過程" },
+  { "src": "HackToTheTop3.jpg", "tag": "HACKATHON", "title": "Hack to the Top AI 金融創新黑客松", "desc": "團隊合影" },
+  { "src": "nantou2.jpg", "tag": "HACKATHON", "title": "2024 南投縣數位山城黑客松", "desc": "活動紀錄" },
+  { "src": "messageImage_1793283935190_0.jpg", "tag": "COMPETITION", "title": "2024 資訊月", "desc": "資訊應用技能競賽合影" },
+  { "src": "AITEC2.jpg", "tag": "PROJECT", "title": "交通違規辨識分級系統", "desc": "AITEC 專案展示" },
+  { "src": "AITEC3.jpg", "tag": "PROJECT", "title": "交通違規辨識分級系統", "desc": "AITEC 專案展示" }
 ]
