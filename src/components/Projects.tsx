@@ -6,6 +6,8 @@ import Icon from './Icon'
 
 /** 左欄上下邊緣淡出大小，同時作為「卡片被遮擋」的判定邊界 */
 const FADE = 72
+/** 切換後固定維持置中（吸收慣性）的時間：讓一次捲動只換一個專案 */
+const PIN_MS = 380
 
 function applyEdgeFade(c: HTMLDivElement) {
   if (window.innerWidth < 1024) {
@@ -34,8 +36,8 @@ function restTopFor(cardH: number, clientH: number) {
  * 參與專案
  * 狀態 A（預設）：三欄式卡片格。
  * 狀態 B（點擊卡片）：左側可捲動清單（被選為簡介卡片、其餘為標題鈕），右側為詳細內容。
- *   捲動左欄時被選卡片一律完整顯示；一旦其上／下緣要被遮擋，即切換相鄰專案（下→下一個、上→上一個）
- *   並把新卡片重新置中；首／末張則固定維持完整顯示。
+ *   捲動左欄時被選卡片一律完整顯示；其上/下緣要被遮擋即切換「相鄰一個」專案並重新置中，
+ *   切換後短暫固定置中吸收慣性 → 一次捲動只換一個專案；首／末張固定維持完整顯示。
  */
 export default function Projects() {
   const [selected, setSelected] = useState<string | null>(null)
@@ -47,38 +49,48 @@ export default function Projects() {
   const selectedRef = useRef<HTMLDivElement>(null)
   const selectedIdRef = useRef<string | null>(selected)
   selectedIdRef.current = selected
-  const pendingRef = useRef<'click' | 'scroll' | null>(null)
-  const suppressUntilRef = useRef(0) // 置中後短暫抑制偵測，避免殘留慣性立即覆蓋
+  const pinnedRef = useRef(false) // 置中吸收期：不再切換、維持卡片完整顯示
+  const pinTimerRef = useRef<number | undefined>(undefined)
 
   const isDesktop = () => window.innerWidth >= 1024
   const topInView = (el: Element, c: HTMLElement) => el.getBoundingClientRect().top - c.getBoundingClientRect().top
 
+  function armPin() {
+    pinnedRef.current = true
+    if (pinTimerRef.current) clearTimeout(pinTimerRef.current)
+    pinTimerRef.current = window.setTimeout(() => {
+      pinnedRef.current = false
+    }, PIN_MS)
+  }
+
+  function recenter() {
+    const c = leftScrollRef.current
+    const card = selectedRef.current
+    if (!c || !card || !isDesktop()) return
+    const max = Math.max(0, c.scrollHeight - c.clientHeight)
+    const restTop = restTopFor(card.offsetHeight, c.clientHeight)
+    c.scrollTop = Math.max(0, Math.min(max, c.scrollTop + topInView(card, c) - restTop))
+    applyEdgeFade(c)
+  }
+
   function selectByClick(id: string) {
-    pendingRef.current = 'click'
     setSelected(id)
+    armPin()
   }
 
   // 置中被選卡片於清晰區（繪製前完成避免跳動）
   useLayoutEffect(() => {
     const c = leftScrollRef.current
-    const card = selectedRef.current
     if (!c) return
-    if (!card || !isDesktop()) {
+    if (!selectedRef.current || !isDesktop()) {
       applyEdgeFade(c)
       return
     }
-    const mode = pendingRef.current
-    pendingRef.current = null
-    const max = Math.max(0, c.scrollHeight - c.clientHeight)
-    const restTop = restTopFor(card.offsetHeight, c.clientHeight)
-    c.scrollTop = Math.max(0, Math.min(max, c.scrollTop + topInView(card, c) - restTop))
-    // 僅點擊/進場需抑制偵測（避免殘留慣性覆蓋）；捲動切換靠 rAF 節流即可，保持順暢連續切換
-    if (mode === 'click') suppressUntilRef.current = performance.now() + 300
-    applyEdgeFade(c)
+    recenter()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
-  // 捲動左欄：被選卡片上/下緣進入遮擋即切換相鄰專案；首末張則重新置中固定
+  // 捲動左欄：被選卡片上/下緣進入遮擋即切換相鄰一個專案；吸收期內維持置中不切換
   useEffect(() => {
     const c0 = leftScrollRef.current
     if (!c0 || !inSplit) return
@@ -89,10 +101,16 @@ export default function Projects() {
     let raf = 0
     function onScroll() {
       applyEdgeFade(c)
-      if (performance.now() < suppressUntilRef.current || !isDesktop() || raf) return
+      if (!isDesktop()) return
+      if (pinnedRef.current) {
+        // 吸收期：維持卡片置中（完整顯示），不切換，直到吸收期結束
+        recenter()
+        return
+      }
+      if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
-        if (performance.now() < suppressUntilRef.current || !isDesktop()) return
+        if (!isDesktop() || pinnedRef.current) return
         const card = selectedRef.current
         if (!card) return
         const clientH = c.clientHeight
@@ -101,24 +119,33 @@ export default function Projects() {
         const cardTop = topInView(card, c)
         const cardBottom = cardTop + cardH
         const idx = PROJECTS.findIndex((p) => p.id === selectedIdRef.current)
+        const last = PROJECTS.length - 1
+        const atTop = c.scrollTop <= 1
+        const atBottom = c.scrollTop + clientH >= c.scrollHeight - 2
         if (cardTop < FADE - 1) {
-          // 上緣被遮擋（往下捲）
-          if (idx >= 0 && idx < PROJECTS.length - 1) {
-            pendingRef.current = 'scroll'
+          // 上緣被遮擋（往下捲）→ 下一個
+          if (idx >= 0 && idx < last) {
             setSelected(PROJECTS[idx + 1].id)
+            armPin()
           } else {
-            c.scrollTop += cardTop - restTopFor(cardH, clientH) // 末張：重新置中固定
-            applyEdgeFade(c)
+            recenter() // 末張：固定置中
           }
         } else if (cardBottom > clientH - FADE + 1) {
-          // 下緣被遮擋（往上捲）
+          // 下緣被遮擋（往上捲）→ 上一個
           if (idx > 0) {
-            pendingRef.current = 'scroll'
             setSelected(PROJECTS[idx - 1].id)
+            armPin()
           } else {
-            c.scrollTop += cardTop - restTopFor(cardH, clientH) // 首張：重新置中固定
-            applyEdgeFade(c)
+            recenter() // 首張：固定置中
           }
+        } else if (atBottom && idx >= 0 && idx < last) {
+          // 捲到底但空間不足以遮擋 → 仍切到下一個（確保能瀏覽到最後一個專案）
+          setSelected(PROJECTS[idx + 1].id)
+          armPin()
+        } else if (atTop && idx > 0) {
+          // 捲到頂但未遮擋 → 上一個（確保能回到第一個專案）
+          setSelected(PROJECTS[idx - 1].id)
+          armPin()
         }
       })
     }
@@ -132,6 +159,7 @@ export default function Projects() {
 
     return () => {
       cancelAnimationFrame(raf)
+      if (pinTimerRef.current) clearTimeout(pinTimerRef.current)
       c.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
       ro.disconnect()
@@ -299,7 +327,7 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
           </ul>
         </div>
 
-        {/* 成果（左側藍色編號方框 + 右側數值與說明） */}
+        {/* 成果（藍色編號 + 數值與說明；無藍底） */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Icon name="workspace_premium" className="text-blue text-[18px]" />
@@ -307,11 +335,9 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {p.outcomes.map((o, i) => (
-              <div key={i} className="flex items-stretch border border-line overflow-hidden">
-                <div className="shrink-0 w-10 bg-blue text-white flex items-center justify-center font-display font-bold">
-                  {i + 1}
-                </div>
-                <div className="flex-1 min-w-0 bg-mist px-3 py-2">
+              <div key={i} className="flex items-start gap-3 border border-line bg-mist px-3 py-2.5">
+                <span className="shrink-0 font-display text-xl font-extrabold text-blue leading-none">{i + 1}</span>
+                <div className="min-w-0">
                   <div className="font-display font-bold text-ink leading-snug">{o.value}</div>
                   <p className="mt-0.5 text-xs text-ink-soft leading-relaxed">{o.caption}</p>
                 </div>
@@ -319,17 +345,6 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
             ))}
           </div>
         </div>
-
-        {/* GitHub */}
-        <a
-          href={p.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue text-white font-medium hover:bg-blue-dark transition-colors"
-        >
-          <Icon name="code" className="text-[18px]" />
-          <span>GitHub Repo</span>
-        </a>
       </div>
     </div>
   )
