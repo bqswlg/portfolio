@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import { EXPERIENCES, CERTIFICATES } from '../data/experiences'
-import type { ExperienceCategory } from '../types'
 import SectionTitle from './SectionTitle'
 import Icon from './Icon'
 
-const FILTERS: { cat: ExperienceCategory; en: string }[] = [
+const FILTERS = [
+  { cat: '全部', en: 'All' },
   { cat: '競賽', en: 'Contest' },
   { cat: '獲獎', en: 'Award' },
   { cat: '學術', en: 'Academic' },
 ]
-const TIMELINE_LIMIT = 7
+const TIMELINE_LIMIT = 5
 
 /** 經歷累積 = 經歷與競賽時間軸（可依類型篩選）+ 證明文件（有資料時顯示，點擊於新分頁開啟 PDF；最多 6 份，其餘摺疊） */
 export default function Experiences() {
   const [showAllCerts, setShowAllCerts] = useState(false)
-  const [filter, setFilter] = useState<ExperienceCategory | null>(null)
+  const [filter, setFilter] = useState<string>('全部')
   const [showAllExp, setShowAllExp] = useState(false)
 
   // 競賽：含競賽與獲獎；獲獎：僅獲獎；學術：僅學術；預設（null）顯示全部
   const shown = EXPERIENCES.filter((exp) => {
-    if (!filter) return true
+    if (filter === '全部') return true
     if (filter === '競賽') return exp.category === '競賽' || exp.category === '獲獎'
     return exp.category === filter
   })
@@ -30,16 +30,18 @@ export default function Experiences() {
     <div className="flex flex-wrap gap-2">
       {FILTERS.map(({ cat, en }) => {
         const active = filter === cat
-        const count = EXPERIENCES.filter((e) =>
-          cat === '競賽' ? e.category === '競賽' || e.category === '獲獎' : e.category === cat,
-        ).length
+        const count = cat === '全部'
+            ? EXPERIENCES.length
+            : EXPERIENCES.filter((e) =>
+                cat === '競賽' ? e.category === '競賽' || e.category === '獲獎' : e.category === cat,
+            ).length
         return (
           <button
             key={cat}
             type="button"
             aria-pressed={active}
             onClick={() => {
-              setFilter(active ? null : cat)
+              setFilter(cat)
               setShowAllExp(false)
             }}
             className={
@@ -70,12 +72,12 @@ export default function Experiences() {
         {/* 時間軸（依篩選顯示；超過 7 筆折疊；標籤與備註前 icon 已移除） */}
         <div className="relative border-l-2 border-line ml-2 pl-8 space-y-9">
           {visibleExp.map((exp) => (
-            <div key={exp.id} id={exp.id} className="relative scroll-mt-28">
-              <span className="absolute -left-[40px] top-1.5 w-3.5 h-3.5 bg-blue border-2 border-mist" />
-              <span className="font-mono text-lg font-semibold text-blue">{exp.date}</span>
-              <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{exp.title}</h3>
-              {exp.result ? <p className="mt-1.5 text-sm text-ink-soft">{exp.result}</p> : null}
-            </div>
+              <div key={exp.id} id={exp.id} className="relative scroll-mt-28">
+                <span className="absolute -left-[40px] top-1.5 w-3.5 h-3.5 bg-blue border-2 border-mist" />
+                <span className="font-mono text-lg font-semibold text-blue">{exp.date}</span>
+                <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{exp.title}</h3>
+                {exp.result ? <p className="mt-1.5 text-sm text-ink-soft">{exp.result}</p> : null}
+              </div>
           ))}
         </div>
 

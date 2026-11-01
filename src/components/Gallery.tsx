@@ -135,10 +135,11 @@ export default function Gallery() {
     }
   }
 
-  const n = queue.length
-  const split = Math.max(1, Math.floor(n / 2))
-  const row1 = queue.slice(0, split)
-  const row2 = queue.slice(split)
+  const thumbsQueue = queue.slice(1)
+  const n = thumbsQueue.length
+  const split = Math.max(1, Math.ceil(n / 2))
+  const row1 = thumbsQueue.slice(0, split)
+  const row2 = thumbsQueue.slice(split)
 
   function renderThumb(stamp: Stamp) {
     return (
@@ -169,7 +170,7 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-24 bg-mist min-h-[calc(100vh-5rem)] flex flex-col justify-center py-20 px-6 border-b border-line"
+      className="scroll-mt-24 bg-mist min-h-[calc(100vh-5rem)] flex flex-col justify-center py-10 sm:py-12 px-6 border-b border-line"
     >
       <div className="max-w-6xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

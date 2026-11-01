@@ -7,7 +7,7 @@ const PRIMARY_EMAIL = 'guokido99@gmail.com'
 const PHONE_DISPLAY = '0981-411-188'
 const PHONE_TEL = '0981411188'
 const GITHUB_URL = 'https://github.com/bqswlg'
-const RESUME_URL = '#contact' // ← 換成履歷 PDF 連結
+const RESUME_URL = 'https://drive.google.com/file/d/1iuE8brFOnZmhXV4vxXIOOdz4B8ODMUsd/view?usp=sharing' // ← 換成履歷 PDF 連結
 /* ──────────────────────────────────────────────────── */
 
 /** 聯繫方式（原「園區資訊」）— 下方有 GitHub 按鍵與履歷下載 */
@@ -25,7 +25,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="scroll-mt-16 bg-slate text-white py-20 sm:py-24 px-6">
+    <section id="contact" className="scroll-mt-16 bg-slate text-white py-10 sm:py-12 px-6">
       <div className="max-w-5xl mx-auto">
         <SectionTitle zh="聯繫方式" en="Contact" invert />
 
@@ -75,7 +75,7 @@ export default function Contact() {
               className="inline-flex items-center justify-center gap-2.5 px-6 py-4 border border-white/30 text-white font-semibold hover:bg-white/10 transition-colors"
             >
               <Icon name="download" className="text-[22px]" />
-              <span>下載履歷 (PDF)</span>
+              <span>個人簡歷 (PDF)</span>
             </a>
           </div>
         </div>

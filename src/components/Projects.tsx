@@ -168,17 +168,16 @@ export default function Projects() {
   }, [inSplit])
 
   return (
-    <section id="projects" className="scroll-mt-24 bg-mist py-20 sm:py-24 px-6">
+    <section id="projects" className="scroll-mt-24 bg-mist py-10 sm:py-12 px-6">
       <div className="max-w-6xl mx-auto">
         <SectionTitle zh="參與專案" en="Projects" />
 
         {sel === null ? (
-          // ── 狀態 A：三欄式卡片格 ──
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.map((p) => (
-              <Card key={p.id} p={p} onClick={() => selectByClick(p.id)} />
-            ))}
-          </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {PROJECTS.map((p) => (
+                  <Card key={p.id} p={p} onClick={() => selectByClick(p.id)} />
+              ))}
+            </div>
         ) : (
           // ── 狀態 B：左右分割 ──
           <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
@@ -282,26 +281,42 @@ function TitleButton({ p, onClick }: { p: Project; onClick: () => void }) {
 
 /** 右側詳細內容（含專案名稱中/英；切換時淡入上滑） */
 function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
-  return (
-    <div className="panel-in bg-paper">
-      {/* 專案名稱（中/英）+ 返回鈕 */}
-      <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-line">
-        <div className="min-w-0">
-          <h3 className="font-display text-xl font-bold text-ink leading-snug">{p.name}</h3>
-          <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-sm text-ink-soft hover:text-blue transition-colors"
-          aria-label="返回三欄瀏覽"
-        >
-          <Icon name="close" className="text-[18px]" />
-          <span>返回</span>
-        </button>
-      </div>
+  const hasValidGithub = p.github && p.github.trim() !== '' && p.github !== 'https://github.com';
 
-      <div className="p-6 lg:p-8 space-y-6">
+  return (
+      <div className="panel-in bg-paper">
+        <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-line">
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-bold text-ink leading-snug">{p.name}</h3>
+            <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
+          </div>
+
+          {/* ★ 按鈕區塊：判斷 p.github 存在時才渲染 */}
+          <div className="flex items-center gap-2 shrink-0">
+            {hasValidGithub && (
+                <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-line text-sm text-ink-soft hover:border-blue hover:text-blue transition-colors"
+                >
+                  <Icon name="code" className="text-[18px]" />
+                  <span className="hidden sm:inline">GitHub</span>
+                </a>
+            )}
+            <button
+                type="button"
+                onClick={onClose}
+                className="inline-flex items-center gap-1 px-2 py-1.5 text-sm text-ink-soft hover:text-blue transition-colors"
+                aria-label="返回三欄瀏覽"
+            >
+              <Icon name="close" className="text-[18px]" />
+              <span className="hidden sm:inline">返回</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6 lg:p-8 space-y-6">
         {/* 動機 */}
         <div>
           <div className="flex items-center gap-2 mb-2">

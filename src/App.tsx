@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useReveal } from './hooks/useReveal'
 import Header from './components/Header'
 import Home from './components/Home'
@@ -8,7 +9,14 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 
 export default function App() {
-  useReveal()
+    useReveal()
+
+    useEffect(() => {
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual'
+        }
+        window.scrollTo(0, 0)
+    }, [])
 
   return (
     <>

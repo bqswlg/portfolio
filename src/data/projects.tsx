@@ -55,6 +55,21 @@ export const PROJECTS: Project[] = [
     github: 'https://github.com',
   },
   {
+    id: 'project-familyactive',
+    name: 'FamilyActive 家庭運動紀錄框架',
+    subtitle: 'FamilyActive — OOP Exercise-Tracking Framework (Java)',
+    intro:
+        '以家庭運動紀錄為應用情境，開發 Java Console App 框架，透過運動點數與家庭旅遊基金的轉換機制，結合物件導向設計、SOLID 原則及七種設計模式，提升程式架構的模組化程度與擴充性。',
+    tags: ['Java 11', 'MVC 架構', 'SOLID 原則', 'OOP', 'Design Patterns', 'Console App 開發'],
+    date: '2026.05 - 2024.06',
+    image: '/projects/familyactive.png',
+    motivation:
+        '希望透過遊戲化的運動紀錄與家庭獎勵機制，提高使用者持續運動的意願，並藉由此專案練習物件導向設計、設計模式及軟體架構規劃。',
+    contributions: ['個人練習專案，負責整體程式架構設計與功能實作。'],
+    outcomes: [{ value: '個人技術練習專案', caption: 'OOP／SOLID／設計模式實作' }],
+    github: 'https://github.com/bqswlg/FamilyActive',
+  },
+  {
     id: 'project-art-companion',
     name: '數據回饋自我察覺之生成式 AI 藝術陪伴系統',
     subtitle: 'A Generative AI Art Companion System for Self-Awareness through Data Feedback',
@@ -110,20 +125,5 @@ export const PROJECTS: Project[] = [
     ],
     outcomes: [{ value: '第三名', caption: '2024 南投縣數位山城黑客松' }],
     github: 'https://github.com',
-  },
-  {
-    id: 'project-familyactive',
-    name: 'FamilyActive 家庭運動紀錄框架',
-    subtitle: 'FamilyActive — OOP Exercise-Tracking Framework (Java)',
-    intro:
-      '以家庭運動紀錄為應用情境，開發 Java Console App 框架，透過運動點數與家庭旅遊基金的轉換機制，結合物件導向設計、SOLID 原則及七種設計模式，提升程式架構的模組化程度與擴充性。',
-    tags: ['Java 11', 'MVC 架構', 'SOLID 原則', 'OOP', 'Design Patterns', 'Console App 開發'],
-    date: '2026.05 - 2024.06',
-    image: '/projects/familyactive.png',
-    motivation:
-      '希望透過遊戲化的運動紀錄與家庭獎勵機制，提高使用者持續運動的意願，並藉由此專案練習物件導向設計、設計模式及軟體架構規劃。',
-    contributions: ['個人練習專案，負責整體程式架構設計與功能實作。'],
-    outcomes: [{ value: '個人技術練習專案', caption: 'OOP／SOLID／設計模式實作' }],
-    github: 'https://github.com/bqswlg/FamilyActive',
   },
 ]
