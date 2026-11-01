@@ -39,11 +39,15 @@ export interface Project {
   sample?: boolean
 }
 
+/** 經歷與競賽的事件類別（用於時間軸篩選） */
+export type ExperienceCategory = '競賽' | '獲獎' | '學術'
+
 /** 歷史回顧 = 經歷與競賽（時間軸） */
 export interface Experience {
   id: string
   date: string
-  tag: string
+  category: ExperienceCategory
   title: string
-  result: string
+  /** 備註（可為空） */
+  result?: string
 }

@@ -1,144 +1,143 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Project } from '../types'
 import { PROJECTS } from '../data/projects'
 import SectionTitle from './SectionTitle'
 import Icon from './Icon'
 
+/** 左欄上下邊緣淡出大小，同時作為「卡片被遮擋」的判定邊界 */
+const FADE = 72
+
+function applyEdgeFade(c: HTMLDivElement) {
+  if (window.innerWidth < 1024) {
+    c.style.maskImage = ''
+    c.style.webkitMaskImage = ''
+    return
+  }
+  const vH = c.clientHeight
+  const atTop = c.scrollTop <= 1
+  const atBottom = c.scrollTop + vH >= c.scrollHeight - 1
+  const topPart = atTop ? '#000 0px' : `transparent 0px, #000 ${FADE}px`
+  const botPart = atBottom ? '#000 100%' : `#000 ${vH - FADE}px, transparent ${vH}px`
+  const grad = `linear-gradient(to bottom, ${topPart}, ${botPart})`
+  c.style.maskImage = grad
+  c.style.webkitMaskImage = grad
+}
+
+/** 被選卡片置中於「清晰區」（上下淡出之間）時，卡片上緣應在的位置 */
+function restTopFor(cardH: number, clientH: number) {
+  const zone = clientH - 2 * FADE
+  if (cardH >= zone) return FADE
+  return FADE + (zone - cardH) / 2
+}
+
 /**
  * 參與專案
  * 狀態 A（預設）：三欄式卡片格。
- * 狀態 B（點擊卡片）：左右兩區塊 — 左側為被點卡片（加陰影上浮）＋ 其餘卡片收合標題鈕（上方僅一顆、整顆
- *                   往頂端淡出；下方第一顆清晰、第二顆往邊緣淡出；可捲動），右側為詳細內容（技術標籤移至此）。
+ * 狀態 B（點擊卡片）：左側可捲動清單（被選為簡介卡片、其餘為標題鈕），右側為詳細內容。
+ *   捲動左欄時被選卡片一律完整顯示；一旦其上／下緣要被遮擋，即切換相鄰專案（下→下一個、上→上一個）
+ *   並把新卡片重新置中；首／末張則固定維持完整顯示。
  */
 export default function Projects() {
   const [selected, setSelected] = useState<string | null>(null)
   const selectedIndex = selected ? PROJECTS.findIndex((p) => p.id === selected) : -1
   const sel = selectedIndex >= 0 ? PROJECTS[selectedIndex] : null
+  const inSplit = sel !== null
 
   const leftScrollRef = useRef<HTMLDivElement>(null)
   const selectedRef = useRef<HTMLDivElement>(null)
+  const selectedIdRef = useRef<string | null>(selected)
+  selectedIdRef.current = selected
+  const pendingRef = useRef<'click' | 'scroll' | null>(null)
+  const suppressUntilRef = useRef(0) // 置中後短暫抑制偵測，避免殘留慣性立即覆蓋
 
-  // 桌面：被選卡片置中對齊右卡中線（緩動捲動）；僅在該側仍有內容時淡出；高度變動時重新置中
+  const isDesktop = () => window.innerWidth >= 1024
+  const topInView = (el: Element, c: HTMLElement) => el.getBoundingClientRect().top - c.getBoundingClientRect().top
+
+  function selectByClick(id: string) {
+    pendingRef.current = 'click'
+    setSelected(id)
+  }
+
+  // 置中被選卡片於清晰區（繪製前完成避免跳動）
+  useLayoutEffect(() => {
+    const c = leftScrollRef.current
+    const card = selectedRef.current
+    if (!c) return
+    if (!card || !isDesktop()) {
+      applyEdgeFade(c)
+      return
+    }
+    const mode = pendingRef.current
+    pendingRef.current = null
+    const max = Math.max(0, c.scrollHeight - c.clientHeight)
+    const restTop = restTopFor(card.offsetHeight, c.clientHeight)
+    c.scrollTop = Math.max(0, Math.min(max, c.scrollTop + topInView(card, c) - restTop))
+    // 僅點擊/進場需抑制偵測（避免殘留慣性覆蓋）；捲動切換靠 rAF 節流即可，保持順暢連續切換
+    if (mode === 'click') suppressUntilRef.current = performance.now() + 300
+    applyEdgeFade(c)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected])
+
+  // 捲動左欄：被選卡片上/下緣進入遮擋即切換相鄰專案；首末張則重新置中固定
   useEffect(() => {
-    const el0 = leftScrollRef.current
-    if (!el0) return
-    const c: HTMLDivElement = el0
+    const c0 = leftScrollRef.current
+    if (!c0 || !inSplit) return
+    const c: HTMLDivElement = c0
     c.style.scrollBehavior = 'auto'
-    c.style.overflowAnchor = 'none' // 關閉捲動錨定，避免置中後字體／版面微調把捲動位置頂掉
-
-    const isDesktop = () => window.innerWidth >= 1024
-
-    function updateFade() {
-      if (!isDesktop()) {
-        c.style.maskImage = ''
-        c.style.webkitMaskImage = ''
-        return
-      }
-      const vH = c.clientHeight
-      const atTop = c.scrollTop <= 1
-      const atBottom = c.scrollTop + vH >= c.scrollHeight - 1
-      const cRect = c.getBoundingClientRect()
-      const card = selectedRef.current
-      const aboveEl = card?.previousElementSibling ?? null
-      const belowEl = card?.nextElementSibling ?? null
-      // 上方：整顆（唯一一顆）按鈕淡出 —— 從視窗頂端淡入到卡片上緣
-      const cardTopY = card ? Math.max(0, Math.round(card.getBoundingClientRect().top - cRect.top)) : 0
-      // 下方：第一顆相鄰按鈕保持清晰，從第二顆開始往邊緣淡出
-      const bottomBand = belowEl ? Math.max(0, cRect.bottom - belowEl.getBoundingClientRect().bottom) : 0
-      const topPart = atTop || !aboveEl || cardTopY <= 0 ? '#000 0px' : `transparent 0px, #000 ${cardTopY}px`
-      const botPart = atBottom || bottomBand <= 0 ? '#000 100%' : `#000 ${vH - bottomBand}px, transparent ${vH}px`
-      const grad = `linear-gradient(to bottom, ${topPart}, ${botPart})`
-      c.style.maskImage = grad
-      c.style.webkitMaskImage = grad
-    }
-
-    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
-
-    function targetTop() {
-      const el = selectedRef.current
-      if (!el) return 0
-      const max = Math.max(0, c.scrollHeight - c.clientHeight)
-      // 卡片上方只保留一顆（淡出）按鈕：把上方第一顆按鈕頂端貼近視窗頂端
-      const aboveEl = el.previousElementSibling as HTMLElement | null
-      const want = aboveEl ? aboveEl.offsetTop - 12 : 0
-      return Math.max(0, Math.min(max, want))
-    }
+    c.style.overflowAnchor = 'none'
 
     let raf = 0
-    let animating = true // 進場即視為動畫中，避免 ResizeObserver 初次回呼搶先 snap 打斷進場
-    let pendingSnap = false
-
-    function snap() {
-      c.scrollTop = targetTop()
-      updateFade()
-    }
-
-    function animateTo() {
-      const start = c.scrollTop
-      const t0 = performance.now()
-      animating = true
-      pendingSnap = false
-      const step = (now: number) => {
-        const t = Math.min(1, (now - t0) / 1000)
-        const to = targetTop() // 每幀重算目標：字體／版面於動畫期間才穩定也能收斂
-        c.scrollTop = start + (to - start) * ease(t)
-        updateFade()
-        if (t < 1) {
-          raf = requestAnimationFrame(step)
-        } else {
-          animating = false
-          snap() // 收尾對準正確置中位置
-          if (pendingSnap) {
-            // 動畫期間版面曾變動（面板高度/字體），等穩定後再對準一次
-            pendingSnap = false
-            requestAnimationFrame(snap)
+    function onScroll() {
+      applyEdgeFade(c)
+      if (performance.now() < suppressUntilRef.current || !isDesktop() || raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        if (performance.now() < suppressUntilRef.current || !isDesktop()) return
+        const card = selectedRef.current
+        if (!card) return
+        const clientH = c.clientHeight
+        const cardH = card.offsetHeight
+        if (cardH > clientH - 2 * FADE) return // 卡片高於清晰區（極少數）：不切換
+        const cardTop = topInView(card, c)
+        const cardBottom = cardTop + cardH
+        const idx = PROJECTS.findIndex((p) => p.id === selectedIdRef.current)
+        if (cardTop < FADE - 1) {
+          // 上緣被遮擋（往下捲）
+          if (idx >= 0 && idx < PROJECTS.length - 1) {
+            pendingRef.current = 'scroll'
+            setSelected(PROJECTS[idx + 1].id)
+          } else {
+            c.scrollTop += cardTop - restTopFor(cardH, clientH) // 末張：重新置中固定
+            applyEdgeFade(c)
+          }
+        } else if (cardBottom > clientH - FADE + 1) {
+          // 下緣被遮擋（往上捲）
+          if (idx > 0) {
+            pendingRef.current = 'scroll'
+            setSelected(PROJECTS[idx - 1].id)
+          } else {
+            c.scrollTop += cardTop - restTopFor(cardH, clientH) // 首張：重新置中固定
+            applyEdgeFade(c)
           }
         }
-      }
-      raf = requestAnimationFrame(step)
+      })
     }
 
-    function recenter(animate: boolean) {
-      if (!isDesktop() || !selectedRef.current) {
-        animating = false
-        updateFade()
-        return
-      }
-      // 分頁隱藏時 rAF 會暫停，動畫跑不動；直接對準以確保靜止位置正確
-      if (document.hidden) {
-        animating = false
-        snap()
-        return
-      }
-      if (animate) animateTo()
-      else if (animating) pendingSnap = true // 動畫中先記下，結束後再對準，避免打斷
-      else snap()
-    }
-
-    // 進場/切換：等版面穩定後再做緩動置中
-    let r1 = requestAnimationFrame(() => {
-      r1 = requestAnimationFrame(() => recenter(true))
-    })
-
-    const onScroll = () => updateFade()
-    const onResize = () => recenter(false)
+    const onResize = () => applyEdgeFade(c)
     c.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
-
-    // 高度變動（內容/字體/面板高度）時重新置中；動畫中則延後到結束再對準
-    const ro = new ResizeObserver(() => recenter(false))
+    const ro = new ResizeObserver(() => applyEdgeFade(c))
     ro.observe(c)
-    if (selectedRef.current) ro.observe(selectedRef.current)
-    document.fonts?.ready.then(() => recenter(false)).catch(() => {})
+    applyEdgeFade(c)
 
     return () => {
-      cancelAnimationFrame(r1)
       cancelAnimationFrame(raf)
       c.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
       ro.disconnect()
     }
-  }, [selected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inSplit])
 
   return (
     <section id="projects" className="scroll-mt-24 bg-mist py-20 sm:py-24 px-6">
@@ -149,32 +148,32 @@ export default function Projects() {
           // ── 狀態 A：三欄式卡片格 ──
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {PROJECTS.map((p) => (
-              <Card key={p.id} p={p} onClick={() => setSelected(p.id)} />
+              <Card key={p.id} p={p} onClick={() => selectByClick(p.id)} />
             ))}
           </div>
         ) : (
           // ── 狀態 B：左右分割 ──
           <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
-            {/* 左側：前卡標題鈕 → 被點卡片 → 後卡標題鈕（置中、動態淡出、可捲動） */}
+            {/* 左側：可捲動清單（被選為卡片、其餘為標題鈕）；卡片完整顯示、遮擋即切換、邊緣淡出 */}
             <div className="lg:col-span-1 lg:relative lg:min-h-[40rem]">
               <div
                 ref={leftScrollRef}
-                className="space-y-3 lg:absolute lg:inset-0 lg:overflow-y-auto lg:py-24 lg:px-3 no-scrollbar"
+                className="space-y-3 lg:absolute lg:inset-0 lg:overflow-y-auto lg:py-32 lg:px-3 no-scrollbar"
               >
                 {PROJECTS.slice(0, selectedIndex).map((p) => (
-                  <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
+                  <TitleButton key={p.id} p={p} onClick={() => selectByClick(p.id)} />
                 ))}
-                <div ref={selectedRef} className="relative z-10 card-lift">
-                  <Card p={sel} selected hideTags />
+                <div ref={selectedRef} data-pid={sel.id} className="relative z-10 card-lift">
+                  <Card p={sel} selected hideTitle />
                 </div>
                 {PROJECTS.slice(selectedIndex + 1).map((p) => (
-                  <TitleButton key={p.id} p={p} onClick={() => setSelected(p.id)} />
+                  <TitleButton key={p.id} p={p} onClick={() => selectByClick(p.id)} />
                 ))}
               </div>
             </div>
-            {/* 右側：詳細內容（含技術標籤；切換時淡入上滑） */}
+            {/* 右側：詳細內容（含名稱中/英；切換時淡入上滑） */}
             <div className="lg:col-span-2">
-              <DetailPanel key={sel.id} p={sel} onClose={() => setSelected(null)} />
+              <DetailPanel p={sel} onClose={() => setSelected(null)} />
             </div>
           </div>
         )}
@@ -183,17 +182,17 @@ export default function Projects() {
   )
 }
 
-/** 專案卡片（狀態 A 格子 / 狀態 B 左側被選卡片；hideTags 時隱藏技術標籤） */
+/** 專案卡片（狀態 A 格子 / 狀態 B 左側被選卡片；hideTitle 時隱藏名稱與英文副標，名稱改由右側顯示） */
 function Card({
   p,
   selected,
   onClick,
-  hideTags,
+  hideTitle,
 }: {
   p: Project
   selected?: boolean
   onClick?: () => void
-  hideTags?: boolean
+  hideTitle?: boolean
 }) {
   return (
     <div
@@ -214,28 +213,32 @@ function Card({
         {p.sample && <span className="absolute top-0 right-0 bg-ink/70 text-white text-[11px] px-2 py-1">範例</span>}
       </div>
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-display text-lg font-bold text-ink leading-snug">{p.name}</h3>
-        <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
-        <p className="mt-3 text-sm text-ink-soft leading-relaxed flex-1">{p.intro}</p>
-        {!hideTags && (
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {p.tags.map((t) => (
-              <span key={t} className="text-[11px] px-2 py-0.5 border border-line text-ink-soft">
-                {t}
-              </span>
-            ))}
-          </div>
+        {!hideTitle && (
+          <>
+            <h3 className="font-display text-lg font-bold text-ink leading-snug">{p.name}</h3>
+            <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
+          </>
         )}
+        <p className={(hideTitle ? '' : 'mt-3 ') + 'text-sm text-ink-soft leading-relaxed flex-1'}>{p.intro}</p>
+        {/* 技術標籤（置於簡介卡片下方） */}
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {p.tags.map((t) => (
+            <span key={t} className="text-[11px] px-2 py-0.5 border border-line text-ink-soft">
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-/** 收合的標題鈕（狀態 B 左側上下方） */
+/** 收合的標題鈕（狀態 B 左側清單；data-pid 供捲動偵測使用） */
 function TitleButton({ p, onClick }: { p: Project; onClick: () => void }) {
   return (
     <button
       type="button"
+      data-pid={p.id}
       onClick={onClick}
       className="group w-full flex items-center justify-between gap-3 px-4 py-3 bg-paper border border-line hover:border-blue hover:bg-blue-soft/40 transition-colors text-left"
     >
@@ -249,16 +252,20 @@ function TitleButton({ p, onClick }: { p: Project; onClick: () => void }) {
   )
 }
 
-/** 右側詳細內容（含技術標籤；不重複名稱/時間；切換時淡入上滑） */
+/** 右側詳細內容（含專案名稱中/英；切換時淡入上滑） */
 function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
   return (
     <div className="panel-in bg-paper">
-      {/* 僅保留返回鈕，不再重複專案名稱與時間 */}
-      <div className="flex justify-end p-3 border-b border-line">
+      {/* 專案名稱（中/英）+ 返回鈕 */}
+      <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-line">
+        <div className="min-w-0">
+          <h3 className="font-display text-xl font-bold text-ink leading-snug">{p.name}</h3>
+          <p className="mt-1 font-mono text-[11px] text-ink-soft">{p.subtitle}</p>
+        </div>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex items-center gap-1 px-2 py-1 text-sm text-ink-soft hover:text-blue transition-colors"
+          className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-sm text-ink-soft hover:text-blue transition-colors"
           aria-label="返回三欄瀏覽"
         >
           <Icon name="close" className="text-[18px]" />
@@ -267,15 +274,6 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
       </div>
 
       <div className="p-6 lg:p-8 space-y-6">
-        {/* 技術標籤（由左卡移至此） */}
-        <div className="flex flex-wrap gap-1.5">
-          {p.tags.map((t) => (
-            <span key={t} className="text-[11px] px-2 py-0.5 bg-mist border border-line text-ink-soft">
-              {t}
-            </span>
-          ))}
-        </div>
-
         {/* 動機 */}
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -301,7 +299,7 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
           </ul>
         </div>
 
-        {/* 成果 */}
+        {/* 成果（左側藍色編號方框 + 右側數值與說明） */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Icon name="workspace_premium" className="text-blue text-[18px]" />
@@ -309,9 +307,14 @@ function DetailPanel({ p, onClose }: { p: Project; onClose: () => void }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {p.outcomes.map((o, i) => (
-              <div key={i} className="bg-mist border-l-2 border-blue px-3 py-2">
-                <div className="font-display font-bold text-ink">{o.value}</div>
-                <p className="text-xs text-ink-soft mt-0.5">{o.caption}</p>
+              <div key={i} className="flex items-stretch border border-line overflow-hidden">
+                <div className="shrink-0 w-10 bg-blue text-white flex items-center justify-center font-display font-bold">
+                  {i + 1}
+                </div>
+                <div className="flex-1 min-w-0 bg-mist px-3 py-2">
+                  <div className="font-display font-bold text-ink leading-snug">{o.value}</div>
+                  <p className="mt-0.5 text-xs text-ink-soft leading-relaxed">{o.caption}</p>
+                </div>
               </div>
             ))}
           </div>

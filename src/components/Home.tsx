@@ -1,7 +1,9 @@
+import Icon from './Icon'
+
 const TAGS = [
-  { label: 'GPA', value: '3.8', unit: '/ 4.3', sub: '前 23%' },
-  { label: '競賽參與', value: '8+', unit: '場', sub: '黑客松 · 競賽' },
-  { label: '專案參與', value: '12+', unit: '個', sub: '系統開發' },
+  { en: 'Grade', label: 'GPA', value: '3.8', unit: '/ 4.3', icon: 'school' },
+  { en: 'Contest', label: '競賽參與', value: '8+', unit: '場', icon: 'emoji_events' },
+  { en: 'Project', label: '專案參與', value: '12+', unit: '個', icon: 'code' },
 ]
 
 const PORTRAIT =
@@ -22,7 +24,7 @@ export default function Home() {
             郭敏彥
           </h1>
           <p className="mt-5 font-display text-lg sm:text-xl font-semibold text-ink-soft">
-            專注於電腦視覺與多模態系統的 AI 軟體工程師
+            Amity Kuo
           </p>
           <div className="mt-5 h-1 w-16 bg-blue" />
           <p className="mt-6 text-ink-soft leading-loose max-w-xl">
@@ -32,13 +34,20 @@ export default function Home() {
 
           <div className="mt-9 grid grid-cols-3 gap-3 max-w-lg">
             {TAGS.map((t) => (
-              <div key={t.label} className="bg-mist border border-line border-t-2 border-t-blue p-4">
-                <span className="font-mono text-[11px] tracking-wider uppercase text-blue">{t.label}</span>
-                <div className="mt-2 font-display text-2xl font-extrabold text-ink leading-none">
+              <div key={t.label} className="relative px-2 pt-8 pb-1 text-center">
+                {/* 淺色英文字 */}
+                <span className="pointer-events-none select-none absolute top-1 inset-x-0 font-display text-base font-extrabold uppercase tracking-wide text-ink/15">
+                  {t.en}
+                </span>
+                <Icon name={t.icon} className="relative text-[28px] text-slate" />
+                <div className="relative mt-1 font-display text-2xl font-extrabold text-ink leading-none">
                   {t.value}
                   <span className="text-xs font-normal text-ink-soft"> {t.unit}</span>
                 </div>
-                <p className="mt-1.5 text-[11px] text-ink-soft">{t.sub}</p>
+                <div className="relative mt-2">
+                  <span className="text-[12px] font-medium text-ink">{t.label}</span>
+                  <span className="mx-auto mt-1 block h-0.5 w-6 bg-blue" />
+                </div>
               </div>
             ))}
           </div>
