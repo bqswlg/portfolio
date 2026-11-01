@@ -8,7 +8,8 @@ export const PROJECTS: Project[] = [
   {
     id: 'project-traffic-triage',
     name: '基於 AI 多模態技術之交通違規樣態自動辨識與智慧化案件分級系統',
-    subtitle: 'Multimodal Traffic Violation Recognition & Case Triage',
+    subtitle: 'A Multimodal AI and RAG-Based Smart Classification and Decision Support System\n' +
+        'for Traffic Law Enforcement',
     intro:
       '整合 YOLO 物件偵測與 VLM 情境判讀，分析交通違規行為及其發生情境，輔助辨識特殊交通情境，並提供案件分級與審查參考。',
     tags: ['Python', 'FastAPI', 'YOLO', 'BoT-SORT', 'VLM', 'LLM', 'RAG', 'Kafka', 'JavaScript', 'Firebase', 'JWT'],
@@ -32,7 +33,8 @@ export const PROJECTS: Project[] = [
   {
     id: 'project-guidesense',
     name: '整合毫米波雷達與輕量化視覺以提升路口通行安全之多模態輔助導航系統',
-    subtitle: 'mmWave Radar × Lightweight Vision Assistive Navigation',
+    subtitle: 'A Multimodal Assistive Navigation System Integrating mmWave Radar and Lightweight Vision\n' +
+        'for Safer Intersection Crossing',
     intro:
       '結合 YOLO 影像辨識與毫米波雷達感測技術，提供視障者戶外行走時的交通號誌辨識及障礙物距離感知輔助。',
     tags: ['mmWave Radar', 'YOLOv8n', 'Python', '3D CNN', 'Raspberry Pi', 'Swift'],
@@ -55,7 +57,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'project-art-companion',
     name: '數據回饋自我察覺之生成式 AI 藝術陪伴系統',
-    subtitle: 'Generative-AI Art Companion for Self-Awareness',
+    subtitle: 'A Generative AI Art Companion System for Self-Awareness through Data Feedback',
     intro:
       '以藝術創作過程中的操作與影像資料為基礎，結合生成式 AI 提供互動式情緒引導，協助使用者整理創作歷程並進行自我覺察。',
     tags: ['Fabric.js', 'Vision API', 'OpenCV', 'FastAPI', 'RAG', 'LLM', 'PostgreSQL', 'S3 / MinIO'],
@@ -72,7 +74,7 @@ export const PROJECTS: Project[] = [
       { value: '共善創新競賽 佳作', caption: '2026 逢甲大學－心科技・創未來' },
       { value: '藝術治療師專業訪談', caption: '台灣藝術治療學會，獲正面回饋' },
     ],
-    github: 'https://github.com',
+    github: 'https://github.com/bqswlg/ArtEchoO',
   },
   {
     id: 'project-fintech',
@@ -90,7 +92,7 @@ export const PROJECTS: Project[] = [
       '使用 FastAPI 與 Python 開發後端服務，將理財及分析功能封裝為 RESTful API，供前端應用介接。',
     ],
     outcomes: [{ value: 'Hack to the Top 決賽入圍', caption: 'AI 金融創新黑客松' }],
-    github: 'https://github.com',
+    github: 'https://github.com/Yuan1285270/AI_Fintech_APIs',
   },
   {
     id: 'project-nantou-travel',
@@ -106,7 +108,7 @@ export const PROJECTS: Project[] = [
     contributions: [
       '蒐集政府公開資料、網路資源與實地調查紀錄，進行資料清洗、結構化整理及特徵萃取，建立旅遊領域知識資料庫。',
     ],
-    outcomes: [{ value: '全國第三名', caption: '2024 南投縣數位山城黑客松' }],
+    outcomes: [{ value: '第三名', caption: '2024 南投縣數位山城黑客松' }],
     github: 'https://github.com',
   },
   {
@@ -116,12 +118,12 @@ export const PROJECTS: Project[] = [
     intro:
       '以家庭運動紀錄為應用情境，開發 Java Console App 框架，透過運動點數與家庭旅遊基金的轉換機制，結合物件導向設計、SOLID 原則及七種設計模式，提升程式架構的模組化程度與擴充性。',
     tags: ['Java 11', 'MVC 架構', 'SOLID 原則', 'OOP', 'Design Patterns', 'Console App 開發'],
-    date: '2024.07 - 2024.10',
+    date: '2026.05 - 2024.06',
     image: '/projects/familyactive.png',
     motivation:
       '希望透過遊戲化的運動紀錄與家庭獎勵機制，提高使用者持續運動的意願，並藉由此專案練習物件導向設計、設計模式及軟體架構規劃。',
     contributions: ['個人練習專案，負責整體程式架構設計與功能實作。'],
     outcomes: [{ value: '個人技術練習專案', caption: 'OOP／SOLID／設計模式實作' }],
-    github: 'https://github.com',
+    github: 'https://github.com/bqswlg/FamilyActive',
   },
 ]
