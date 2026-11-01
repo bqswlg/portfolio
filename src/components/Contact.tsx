@@ -3,10 +3,10 @@ import SectionTitle from './SectionTitle'
 import Icon from './Icon'
 
 /* ── 聯絡資訊（請替換為實際值） ───────────────────────── */
-const PRIMARY_EMAIL = 'dev.ai.engineer@example.com'
-const PHONE_DISPLAY = '+886 912-345-678'
-const PHONE_TEL = '+886912345678'
-const GITHUB_URL = 'https://github.com'
+const PRIMARY_EMAIL = 'guokido99@gmail.com'
+const PHONE_DISPLAY = '0981-411-188'
+const PHONE_TEL = '0981411188'
+const GITHUB_URL = 'https://github.com/bqswlg'
 const RESUME_URL = '#contact' // ← 換成履歷 PDF 連結
 /* ──────────────────────────────────────────────────── */
 
